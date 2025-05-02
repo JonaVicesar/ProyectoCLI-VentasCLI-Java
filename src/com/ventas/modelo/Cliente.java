@@ -7,48 +7,87 @@ public class Cliente {
     public String nombreCompleto;
     public int edad;
     public int documento;
-    public int telefono;
+    public String telefono;
     
     public Cliente(){
         this.nombreCompleto = "No identificado";
     }
     
-    public Cliente(String nombreCompleto, int edad, int documento, int telefono){
+    /**
+     * 
+     * @param nombreCompleto
+     * @param edad
+     * @param documento
+     * @param telefono 
+     */
+    public Cliente(String nombreCompleto, int edad, int documento, String telefono){
         this.nombreCompleto = nombreCompleto;
         this.edad = edad;
         this.documento = documento;
         this.telefono = telefono;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getNombreCompleto() {
         return nombreCompleto;
     }
 
+    /**
+     * 
+     * @param nombreCompleto 
+     */
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getEdad() {
         return edad;
     }
 
+    /**
+     * 
+     * @param edad 
+     */
     public void setEdad(int edad) {
         this.edad = edad;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getDocumento() {
         return documento;
     }
 
+    /**
+     * 
+     * @param documento 
+     */
     public void setDocumento(int documento) {
         this.documento = documento;
     }
 
-    public int getTelefono() {
+    /**
+     * 
+     * @return 
+     */
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    /**
+     * 
+     * @param telefono 
+     */
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

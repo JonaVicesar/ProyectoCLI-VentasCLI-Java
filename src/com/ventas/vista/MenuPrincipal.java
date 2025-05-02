@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author 1
+ * @author Jona Vicesar
  */
 public class MenuPrincipal {
     public Scanner entrada = new Scanner(System.in);
@@ -45,18 +45,18 @@ public class MenuPrincipal {
             
             case "3":
                 menuVentas.mostrar();
-               
                 break;
                 
             case "4":
-                System.out.print("Muchas Gracias!");
+                System.out.println("Muchas Gracias!");
+                System.out.println("Seguime en Instagram @jonavicesar q(≧▽≦q)");
                 break;
                 
             default:
-                System.out.print("Opcion Invalida pedazo de alcornoque!");
+                System.out.println("Opcion Invalida pedazo de alcornoque!");
+                mostrar();
         }
         
     }
-    
     
 }

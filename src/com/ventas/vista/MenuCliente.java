@@ -10,104 +10,153 @@ import java.util.Scanner;
  * @author Jona Vicesar
  */
 public class MenuCliente {
+
     public Scanner entrada = new Scanner(System.in);
-    public ControladorCliente controladorClientes = new ControladorCliente();
-    
-    public void mostrar(){
-        System.out.println("#MENU CLIENTES" );
-        System.out.println("Seleccione una opcion" );
-        System.out.println("1 - Agregar Cliente" );
-        System.out.println("2 - Eliminar Cliente" );
-        System.out.println("3 - Editar Cliente" );
-        System.out.println("4 - Lista de Clientes" );
-        System.out.println("5 - Volver al Menu Principal" );
-        
+    public static final ControladorCliente controladorClientes = new ControladorCliente();
+
+    public void mostrar() {
+        System.out.println("####MENU CLIENTES#### ^_^");
+        System.out.println("Seleccione una opcion");
+        System.out.println("1 - Agregar Cliente");
+        System.out.println("2 - Eliminar Cliente");
+        System.out.println("3 - Editar Cliente");
+        System.out.println("4 - Lista de Clientes");
+        System.out.println("5 - Volver al Menu Principal");
+
         seleccionarOpcion();
-       
     }
-    
-    private void seleccionarOpcion(){
+
+    private void seleccionarOpcion() {
         String opcion = entrada.next();
-        
-        switch(opcion){
+
+        switch (opcion) {
             case "1":
-               controladorClientes.agregarCliente();
-               break;
-               
+                System.out.println("Ingrese los requeridos para agregar un nuevo cliente");
+                System.out.println("Ingrese su Nombre(El nombre no puede contener numeros ni caracteres especiales))");
+                String nombre = entrada.next();
+                System.out.println("Ingrese su edad(debe ser mayor  a 13");
+                int edad = entrada.nextInt();
+                System.out.println("Ingrese su numero de documento");
+                System.out.println("RECUERDE QUE UNA VEZ CREADO EL NUMERO DE DOCUMENTO NO SE PUEDE EDITAR (ㆆ_ㆆ)");
+                int documento = entrada.nextInt();
+                System.out.println("Ingrese su numero de telefono");
+                String telefono = entrada.next();
+
+                if (controladorClientes.agregarCliente(nombre, edad, documento, telefono)) {
+                    System.out.println("Cliente agregado exitosamente!(*^_^*)");
+                    mostrar();
+                } else {
+                    System.out.println("Ocurrio un error verifique sus datos :/ ");
+                    mostrar();
+                }
+
+                break;
+
             case "2":
-                if(!controladorClientes.eliminarCliente()){
+                System.out.println("Ingrese el documento del cliente que desea eliminar");
+                int documentoCliente = entrada.nextInt();
+
+                if (controladorClientes.eliminarCliente(documentoCliente)) {
+                    System.out.println("Cliente eliminado exitosamente! (*^_^*)");
+                    mostrar();
+
+                } else {
+                    System.out.println("Ocurio un error al momento de eliminar el cliente, porfavor verifique el documento y vuelva a intentar");
                     mostrar();
                 }
                 break;
-                
+
             case "3":
                 menuEditar();
-                break;   
-                
+                break;
+
             case "4":
                 listarClientes();
+                mostrar();
                 break;
-                
+
         }
     }
-    
-    public void menuEditar(){
-        System.out.println("#MENU CLIENTES" );
-        System.out.println("Seleccione una opcion ^_^: " );
-        System.out.println("1 - Editar Nombre" );
-        System.out.println("2 - Editar Telefono" );
-        System.out.println("3 - Volver al Menu Principal" );
-        
+
+    public void menuEditar() {
+        System.out.println("#MENU CLIENTES");
+        System.out.println("Seleccione una opcion ^_^: ");
+        System.out.println("1 - Editar Nombre");
+        System.out.println("2 - Editar Telefono");
+        System.out.println("3 - Volver al Menu Principal");
+
         seleccionarOpcionEditar();
     }
-    
-    private void seleccionarOpcionEditar(){
+
+    private void seleccionarOpcionEditar() {
         String opcion = entrada.next();
-        switch(opcion){
+        switch (opcion) {
             case "1":
-                controladorClientes.editarNombre();
+                System.out.println("Ingrese el numero de documento del Cliente que va a editar  ");
+                int documento = entrada.nextInt();
+                System.out.println("Ingrese el Nuevo Nombre");
+                String nuevoNombre = entrada.next();
+
+                if (controladorClientes.editarNombre(nuevoNombre, documento)) {
+                    System.out.println("Nombre editado exitosamente! ヾ(≧▽≦*)o");
+                   
+                } else {
+                    System.out.println("Ocurrio un error al editar el nombre X﹏X");
+                }
+                menuEditar();
+
                 break;
-                
+
             case "2":
-                controladorClientes.editarTelefono();
+                System.out.println("Ingrese el documento del cliente:");
+                int doc = entrada.nextInt();
+                entrada.nextLine();
+                System.out.println("Ingrese el nuevo telefono (ej:0981123456):");
+                String nuevoTelefono = entrada.nextLine().trim();
+
+                if (controladorClientes.editarTelefono(nuevoTelefono, doc)) {
+                    System.out.println("Telefono actualizado con exito! ヽ(^◇^*)/");
+                } else {
+                    
+                    System.out.println("Error al actualizar el teléfono (╥﹏╥)");
+                }
+                menuEditar();
                 break;
-            
+
             case "3":
                 MenuPrincipal menu = new MenuPrincipal();
                 menu.mostrar();
                 break;
-             
+
             default:
                 System.out.println("Opcion Invalida ￣へ￣");
                 break;
         }
     }
-    
-    
-    private void listarClientes() {
-        System.out.println("\n=== LISTADO DE CLIENTES ===");
-        controladorClientes.listaClientes();
-        ///List<Cliente> clientes = controladorClientes.listaClientes();
-        
-      /*  if (clientes.isEmpty()) {
+
+        private void listarClientes() {
+        List<Cliente> clientes = controladorClientes.listaClientes();
+        System.out.println("\n### LISTA DE CLIENTES ### (‾◡◝)");
+        if (clientes.isEmpty()) {
             System.out.println("No hay clientes registrados.");
             return;
         }
-        
+
         // Encabezado de la tabla
-        System.out.printf("%-30s %-10s %-15s %-15s%n", "NOMBRE", "EDAD", "DOCUMENTO", "TELÉFONO");
-        System.out.println("-------------------------------------------------------------------------");
-        
+        System.out.printf("%-30s %-10s %-15s %-15s%n", "NOMBRE", "EDAD", "DOCUMENTO", "TELEFONO");
+        System.out.println("------------------------------------------------------------");
+
         // Datos de los clientes
         for (Cliente c : clientes) {
-            System.out.printf("%-30s %-10d %-15d %-15d%n", 
-                    c.getNombreCompleto(), 
-                    c.getEdad(), 
-                    c.getDocumento(), 
-                    c.getTelefono());
+            System.out.printf("%-30s %-10d %-15d %-15s%n", 
+                c.getNombreCompleto(), 
+                c.getEdad(), 
+                c.getDocumento(), 
+                c.getTelefono());
         }
-        
-        System.out.println("-------------------------------------------------------------------------");
-        System.out.println("Total de clientes: " + clientes.size());*/
+
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Total de clientes: " + clientes.size());
+        mostrar(); 
     }
 }

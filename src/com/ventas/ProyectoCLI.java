@@ -3,7 +3,7 @@ import com.ventas.repositorio.RepositorioCliente;
 import com.ventas.vista.MenuPrincipal;
 /**
  *
- * @author 1
+ * @author Jona Vicesar
  */
 public class ProyectoCLI {
     public static void main(String[] args) {
