@@ -6,72 +6,96 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 /**
  *
  * @author Jona Vicesar
  */
 public class ControladorCliente {
-   
+
     private static final RepositorioCliente repositorio = new RepositorioCliente();
     public Scanner entrada = new Scanner(System.in);
-    
-    public ControladorCliente(){
-    }
-    
-    public void agregarCliente(){
-        System.out.println("Ingrese los requeridos para agregar un nuevo cliente");
-        System.out.println("Ingrese su Nombre(El nombre no puede contener numeros ni caracteres especiales))");
-        String nombre = entrada.next();
-        System.out.println("Ingrese su edad(debe ser mayor  a 13");
-        int edad = entrada.nextInt();
-        System.out.println("Ingrese su numero de documento");
-        System.out.println("RECUERDE QUE UNA VEZ CREADO EL NUMERO DE DOCUMENTO NO SE PUEDE EDITAR");
-        int documento = entrada.nextInt();
-        System.out.println("Ingrese su numero de telefono");
-        int telefono = entrada.nextInt();
-        
-        repositorio.agregarCliente(nombre, edad, documento, telefono);
-        System.out.println("Cliente agregado exitosamente!(*^_^*)");
-            
 
+    public ControladorCliente() {
     }
-    
-    public boolean eliminarCliente(){
-        System.out.println("Ingrese el documento del cliente que desea eliminar");
-        int documento = entrada.nextInt();
-        
-        if(repositorio.eliminarCliente(documento)){
-            System.out.println("Cliente eliminado exitosamente! (*^_^*)");
-            return true;
-        }
-        else{
-            System.out.println("Ocurio un error al momento de eliminar el cliente, porfavor verifique el documento y vuelva a intentar");
+
+    /**
+     * 
+     * @param nombre
+     * @param edad
+     * @param documento
+     * @param telefono
+     * @return 
+     */
+    public boolean agregarCliente(String nombre, int edad, int documento, String telefono) {
+        if (nombre == null || nombre.trim().isEmpty()) {
             return false;
         }
-    }
-    
-    public void editarNombre(){
-        System.out.println("Ingrese el numero de documento del Cliente que va a editar  ");
-        int documento =  entrada.nextInt();
-        System.out.println("Ingrese el Nuevo Nombre");
-        String nuevoNombre = entrada.next();
-        
-        if(repositorio.editarNombreCliente(nuevoNombre, documento)){
-            System.out.println("Nombre editado exitosamente! ヾ(≧▽≦*)o");
+        if (edad <= 0) {
+            return false;
         }
-        
-        else{
-            System.out.println("Ocurrio un error al editar el nombre X﹏X");
+        if (documento < 100000) {
+            return false;
         }
+
+        if (repositorio.existeCliente(documento)) {
+            return false;
+        }
+
+        return repositorio.agregarCliente(nombre, edad, documento, telefono);
+
     }
-    
-    public void editarTelefono(){
-        
+
+    public boolean eliminarCliente(int documento) {
+        if (documento < 100000) {
+            return false;
+        }
+        if (!repositorio.existeCliente(documento)) {
+            return false;
+        }
+        return repositorio.eliminarCliente(documento);
+
     }
-    
-    public void listaClientes(){
-        repositorio.listaClientes();
+
+    /**
+     * 
+     * @param nuevoNombre
+     * @param documento
+     * @return 
+     */
+    public boolean editarNombre(String nuevoNombre, int documento) {
+        if (!repositorio.existeCliente(documento)) {
+            return false;
+        }
+
+        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+            return false;
+        }
+        return repositorio.editarNombreCliente(nuevoNombre, documento);
     }
-    
+
+    /**
+     * 
+     * @param nuevoTelefono
+     * @param documento
+     * @return 
+     */
+     public boolean editarTelefono(String nuevoTelefono, int documento) {
+        String regex = "^(09\\d{8})$"; //validacion de numero de telefono, debe comenzar con 09 y tener 8 numeros 
+        if (!nuevoTelefono.matches(regex)) {
+            System.out.println("Formato de teléfono inválido.");
+            return false;
+        }
+
+        if (!repositorio.existeCliente(documento)) {
+            System.out.println("Cliente no encontrado.");
+            return false;
+        }
+
+        return repositorio.editarTelefonoCliente(nuevoTelefono, documento);
+    }
+
+     public List<Cliente> listaClientes() {
+        return repositorio.listaClientes();
+    }
+
 }
