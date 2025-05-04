@@ -1,5 +1,4 @@
 package com.ventas;
-import com.ventas.repositorio.RepositorioCliente;
 import com.ventas.vista.MenuPrincipal;
 /**
  *

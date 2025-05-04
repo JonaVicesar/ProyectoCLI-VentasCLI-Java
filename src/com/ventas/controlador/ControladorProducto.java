@@ -1,7 +1,8 @@
 package com.ventas.controlador;
 
 import com.ventas.modelo.Producto;
-import java.util.HashMap;
+import com.ventas.repositorio.RepositorioProductos;
+import java.util.List;
 
 /**
  *
@@ -9,53 +10,88 @@ import java.util.HashMap;
  */
 public class ControladorProducto {
 
-    public HashMap<Producto, Integer> listaProductos = new HashMap<>();
+    RepositorioProductos repositorio = new RepositorioProductos();
 
     public ControladorProducto() {
 
     }
 
-    public Producto crearProducto(String nombre, int id,double precio, int cantidad) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío");
+    public boolean agregarProducto(String nombre, double precio, int cantidad) {
+        if (repositorio.existeProducto(nombre.trim().toLowerCase())) {
+            throw new IllegalArgumentException("El producto ya existe!");
         }
-        if (precio <= 0) {
-            throw new IllegalArgumentException("El precio debe ser mayor a cero");
+        if (precio <= 0 || cantidad <= 0) {
+            throw new IllegalArgumentException("El precio y el stock deben ser mayores a cero.");
         }
-        if (cantidad < 0) {
-            throw new IllegalArgumentException("La cantidad(stock) debe ser mayor a cero" );
+
+        repositorio.agregarProducto(nombre, precio, cantidad);
+        return true;
+
+    }
+
+    public boolean eliminarProducto(String nombreProducto) {
+        if (nombreProducto == null || nombreProducto.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
+        }
+        if (!repositorio.existeProducto(nombreProducto)) {
+            throw new IllegalArgumentException("El producto no existe ￣へ￣");
+        }
+        return repositorio.eliminarProducto(nombreProducto);
+    }
+
+    public boolean editarNombre(String nombreProducto, String nuevoNombre) {
+        if (nombreProducto == null || nombreProducto.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
+        }
+        if (nuevoNombre == null || nuevoNombre.isEmpty()) {
+            throw new IllegalArgumentException("El nuevo nombre no puedo estar en blanco o estar vacio");
+        }
+        if (!repositorio.existeProducto(nombreProducto)) {
+            throw new IllegalArgumentException("El producto no existe ￣へ￣");
+        }
+
+        return repositorio.editarNombre(nombreProducto, nuevoNombre);
+    }
+
+    public boolean editarPrecio(String nombreProducto, double nuevoPrecio) {
+        if (nombreProducto == null || nombreProducto.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
+        }
+
+        if (nuevoPrecio <= 0) {
+            throw new IllegalArgumentException("EL precio no puede ser menor a cero");
+        }
+
+        if (!repositorio.existeProducto(nombreProducto)) {
+            throw new IllegalArgumentException("El producto no existe ￣へ￣");
+        }
+
+        return repositorio.editarPrecio(nombreProducto, nuevoPrecio);
+    }
+
+    public boolean editarStock(String nombreProducto, int nuevoStock) {
+        if (nombreProducto == null || nombreProducto.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
         }
         
-        Producto producto = new Producto(nombre, id, precio, cantidad);
-        listaProductos.put(producto, cantidad);
-        return producto;
-    }
-    
-    public void eliminarProducto(Producto producto){
-        if (producto == null) {
-            throw new IllegalArgumentException("Ingrese un producto");
-        }
-        if (!listaProductos.containsKey(producto)){
-            throw new IllegalArgumentException("EL producto debe exitir");
+        if(nuevoStock < 0){
+            throw new IllegalArgumentException("El nuevo stock no puede ser un numero negativo");
         }
         
-        listaProductos.remove(producto);
-    }
-    
-    public void editarNombre(){
+        if (!repositorio.existeProducto(nombreProducto)) {
+            throw new IllegalArgumentException("El producto no existe ￣へ￣");
+        }
         
-    }
-    
-    public void editarStock(){
+        if(nuevoStock == 0){
+            eliminarProducto(nombreProducto);
+        }
         
+        return repositorio.editarStock(nombreProducto, nuevoStock);
+
     }
-    
-    public void editarPrecio(){
-        
+
+    public List<Producto> listaProductos() {
+        return repositorio.listaProductos();
     }
-    
-    public void listaProductos(){
-        
-    }
-   
+
 }

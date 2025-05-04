@@ -31,7 +31,8 @@ public class MenuCliente {
 
         switch (opcion) {
             case "1":
-                System.out.println("Ingrese los requeridos para agregar un nuevo cliente");
+                System.out.println("--Ingrese los requeridos para agregar un nuevo cliente (*^-^*)");
+                System.out.println(" ");
                 System.out.println("Ingrese su Nombre(El nombre no puede contener numeros ni caracteres especiales))");
                 String nombre = entrada.next();
                 System.out.println("Ingrese su edad(debe ser mayor  a 13");
@@ -41,29 +42,52 @@ public class MenuCliente {
                 int documento = entrada.nextInt();
                 System.out.println("Ingrese su numero de telefono");
                 String telefono = entrada.next();
+                System.out.println("Seleccione su metodo de pago(Tarjeta o Efectivo): ");
+                String metodo = entrada.next().toUpperCase();
 
-                if (controladorClientes.agregarCliente(nombre, edad, documento, telefono)) {
-                    System.out.println("Cliente agregado exitosamente!(*^_^*)");
-                    mostrar();
-                } else {
-                    System.out.println("Ocurrio un error verifique sus datos :/ ");
-                    mostrar();
+                if (metodo.equalsIgnoreCase("tarjeta")) {
+                    System.out.println("Ingrese su numero de tarjeta: ");
+                    String tarjeta = entrada.next();
+
+                    if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo, tarjeta)) {
+                        System.out.println("Cliente agregado exitosamente!(*^_^*)");
+                    }
                 }
 
+                if (metodo.equalsIgnoreCase("efectivo")) {
+                    if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo)) {
+                        System.out.println("Cliente agregado exitosamente!(*^_^*)");
+
+                    }
+                } else {
+                    System.out.println("Ocurrio un error verifique sus datos :/ ");
+
+                }
+                mostrar();
                 break;
 
             case "2":
                 System.out.println("Ingrese el documento del cliente que desea eliminar");
                 int documentoCliente = entrada.nextInt();
 
-                if (controladorClientes.eliminarCliente(documentoCliente)) {
-                    System.out.println("Cliente eliminado exitosamente! (*^_^*)");
-                    mostrar();
+                System.out.println("ESTA SEGURO QUE QUIERE ELIMINAR EL CLIENTE? (INGRESE (Y) SI SI (N) SI NO");
+                String confirmacion = entrada.next();
 
-                } else {
-                    System.out.println("Ocurio un error al momento de eliminar el cliente, porfavor verifique el documento y vuelva a intentar");
-                    mostrar();
+                if (confirmacion.equalsIgnoreCase("y")) {
+                    if (controladorClientes.eliminarCliente(documentoCliente)) {
+                        System.out.println("Usuario elimnado exitosamente!");
+                    }  
                 }
+                
+                if (confirmacion.equalsIgnoreCase("n")){
+                    System.out.println("Muchaas gracias. Volviendo al Menu Cliente! ^_^");
+                }
+                
+                else {
+                    System.out.println("Ocurio un error al momento de eliminar el cliente, porfavor verifique el documento y vuelva a intentar");
+                    
+                }
+                mostrar();
                 break;
 
             case "3":
@@ -73,6 +97,11 @@ public class MenuCliente {
             case "4":
                 listarClientes();
                 mostrar();
+                break;
+
+            case "5":
+                MenuPrincipal menu = new MenuPrincipal();
+                menu.mostrar();
                 break;
 
         }
@@ -99,7 +128,7 @@ public class MenuCliente {
 
                 if (controladorClientes.editarNombre(nuevoNombre, documento)) {
                     System.out.println("Nombre editado exitosamente! ヾ(≧▽≦*)o");
-                   
+
                 } else {
                     System.out.println("Ocurrio un error al editar el nombre X﹏X");
                 }
@@ -117,7 +146,7 @@ public class MenuCliente {
                 if (controladorClientes.editarTelefono(nuevoTelefono, doc)) {
                     System.out.println("Telefono actualizado con exito! ヽ(^◇^*)/");
                 } else {
-                    
+
                     System.out.println("Error al actualizar el teléfono (╥﹏╥)");
                 }
                 menuEditar();
@@ -134,7 +163,11 @@ public class MenuCliente {
         }
     }
 
-        private void listarClientes() {
+    private void metodoPago() {
+        System.out.println("");
+    }
+
+    private void listarClientes() {
         List<Cliente> clientes = controladorClientes.listaClientes();
         System.out.println("\n### LISTA DE CLIENTES ### (‾◡◝)");
         if (clientes.isEmpty()) {
@@ -144,19 +177,22 @@ public class MenuCliente {
 
         // Encabezado de la tabla
         System.out.printf("%-30s %-10s %-15s %-15s%n", "NOMBRE", "EDAD", "DOCUMENTO", "TELEFONO");
-        System.out.println("------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------");
 
         // Datos de los clientes
         for (Cliente c : clientes) {
-            System.out.printf("%-30s %-10d %-15d %-15s%n", 
-                c.getNombreCompleto(), 
-                c.getEdad(), 
-                c.getDocumento(), 
-                c.getTelefono());
+            System.out.printf("%-30s %-10d %-15d %-15s %-15s %-20s%n",
+                    c.getNombreCompleto(),
+                    c.getEdad(),
+                    c.getDocumento(),
+                    c.getTelefono(),
+                    c.getMetodoPago(),
+                    c.getTarjeta() != null ? "****" + c.getTarjeta().substring(12) : "N/A");
+
         }
 
         System.out.println("------------------------------------------------------------");
         System.out.println("Total de clientes: " + clientes.size());
-        mostrar(); 
+        mostrar();
     }
 }

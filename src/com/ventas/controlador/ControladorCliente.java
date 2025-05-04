@@ -26,7 +26,26 @@ public class ControladorCliente {
      * @param telefono
      * @return 
      */
-    public boolean agregarCliente(String nombre, int edad, int documento, String telefono) {
+    public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return false;
+        }
+        if (edad <= 0) {
+            return false;
+        }
+        if (documento < 100000) {
+            return false;
+        }
+
+        if (repositorio.existeCliente(documento)) {
+            return false;
+        }
+                
+        return repositorio.agregarCliente(nombre, edad, documento, telefono, metodo);
+
+    }
+    
+    public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo, String tarjeta) {
         if (nombre == null || nombre.trim().isEmpty()) {
             return false;
         }
@@ -41,7 +60,7 @@ public class ControladorCliente {
             return false;
         }
 
-        return repositorio.agregarCliente(nombre, edad, documento, telefono);
+        return repositorio.agregarCliente(nombre, edad, documento, telefono, metodo, tarjeta);
 
     }
 
