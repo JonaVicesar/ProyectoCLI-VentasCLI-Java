@@ -4,6 +4,8 @@ import com.ventas.modelo.Producto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.ventas.repositorio.RepositorioCliente;
+import com.ventas.repositorio.RepositorioProductos;
 
 /**
  *
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class RepositorioProductos {
 
-    private final HashMap<String, Producto> repositorio = new HashMap<>();
+    public static final HashMap<String, Producto> repositorio = new HashMap<>();
     private int contadorId = 1;
 
     public RepositorioProductos() {
@@ -30,9 +32,9 @@ public class RepositorioProductos {
     }
 
     public boolean editarNombre(String nombreProducto, String nuevoNombre) {
-        Producto producto = repositorio.remove(nombreProducto.toLowerCase()); 
+        Producto producto = repositorio.remove(nombreProducto.toLowerCase());
         producto.setNombre(nuevoNombre);
-        repositorio.put(nuevoNombre.toLowerCase(), producto); 
+        repositorio.put(nuevoNombre.toLowerCase(), producto);
         return true;
     }
 
@@ -43,15 +45,40 @@ public class RepositorioProductos {
         return true;
     }
 
-    public boolean editarStock(String nombreProducto, int nuevoStock){
+    public boolean editarStock(String nombreProducto, int nuevoStock) {
         Producto productoAEditar = repositorio.get(nombreProducto);
         productoAEditar.setCantidad(nuevoStock);
         repositorio.replace(nombreProducto, productoAEditar);
         return true;
     }
-    
+
     public boolean existeProducto(String nombre) {
         return repositorio.containsKey(nombre.toLowerCase());
+    }
+
+    public Producto getProducto(String nombre) {
+        return repositorio.get(nombre);
+    }
+
+    /**
+     * Actualiza el stock de un producto específico
+     *
+     * @param nombreProducto Nombre del producto a actualizar
+     * @param nuevoStock Nuevo valor de stock para el producto
+     * @return true si la actualización fue exitosa, false en caso contrario
+     */
+    public boolean actualizarStock(String nombreProducto, int nuevoStock) {
+        if (nuevoStock < 0) {
+            return false; // No permitir stock negativo
+        }
+
+        Producto producto = repositorio.get(nombreProducto.toLowerCase());
+        if (producto == null) {
+            return false; // El producto no existe
+        }
+
+        producto.setCantidad(nuevoStock);
+        return true;
     }
 
     public List<Producto> listaProductos() {

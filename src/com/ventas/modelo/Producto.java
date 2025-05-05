@@ -4,10 +4,10 @@ package com.ventas.modelo;
  * @author Jona Vicesar
  */
 public class Producto {
-    public String nombre;
-    public int id;  //como el codigo del codigo de barras
-    public double precio;
-    public int cantidad; //stock
+    private String nombre;
+    private int id;  //como el codigo del codigo de barras
+    private double precio;
+    private int cantidad; //stock
     
     public Producto(){
         

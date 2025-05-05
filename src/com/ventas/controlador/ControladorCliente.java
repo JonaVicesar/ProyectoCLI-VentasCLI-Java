@@ -28,17 +28,17 @@ public class ControladorCliente {
      */
     public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
         }
-        if (edad <= 0) {
-            return false;
+        if (edad <= 13) {
+            throw new IllegalArgumentException("El cliente debe ser mayor de 13");
         }
         if (documento < 100000) {
-            return false;
+            throw new IllegalArgumentException("Numero de documento incorrecto");
         }
 
         if (repositorio.existeCliente(documento)) {
-            return false;
+            throw new IllegalArgumentException("Ya existe un cliente con el mismo documento");
         }
                 
         return repositorio.agregarCliente(nombre, edad, documento, telefono, metodo);
@@ -47,17 +47,17 @@ public class ControladorCliente {
     
     public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo, String tarjeta) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
         }
-        if (edad <= 0) {
-            return false;
+        if (edad <= 13) {
+             throw new IllegalArgumentException("El cliente debe ser mayor de 13");
         }
         if (documento < 100000) {
-            return false;
+           throw new IllegalArgumentException("Numero de documento incorrecto");
         }
 
         if (repositorio.existeCliente(documento)) {
-            return false;
+            throw new IllegalArgumentException("Ya existe un cliente con el mismo documento");
         }
 
         return repositorio.agregarCliente(nombre, edad, documento, telefono, metodo, tarjeta);
@@ -66,10 +66,10 @@ public class ControladorCliente {
 
     public boolean eliminarCliente(int documento) {
         if (documento < 100000) {
-            return false;
+            throw new IllegalArgumentException("Numero de documento incorrecto");
         }
         if (!repositorio.existeCliente(documento)) {
-            return false;
+            throw new IllegalArgumentException("No existe el cliente");
         }
         return repositorio.eliminarCliente(documento);
 
@@ -82,13 +82,16 @@ public class ControladorCliente {
      * @return 
      */
     public boolean editarNombre(String nuevoNombre, int documento) {
+        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
+
+        }
+        
         if (!repositorio.existeCliente(documento)) {
-            return false;
+            throw new IllegalArgumentException("No existe el cliente");
         }
 
-        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
-            return false;
-        }
+        
         return repositorio.editarNombreCliente(nuevoNombre, documento);
     }
 
@@ -99,15 +102,13 @@ public class ControladorCliente {
      * @return 
      */
      public boolean editarTelefono(String nuevoTelefono, int documento) {
-        String regex = "^(09\\d{8})$"; //validacion de numero de telefono, debe comenzar con 09 y tener 8 numeros 
+        String regex = "^(09\\d{8})$"; //validacion de numero de telefono
         if (!nuevoTelefono.matches(regex)) {
-            System.out.println("Formato de teléfono inválido.");
-            return false;
+            throw new IllegalArgumentException("El numero de telefono es incorrecto");
         }
 
         if (!repositorio.existeCliente(documento)) {
-            System.out.println("Cliente no encontrado.");
-            return false;
+            throw new IllegalArgumentException("No existe el cliente");
         }
 
         return repositorio.editarTelefonoCliente(nuevoTelefono, documento);

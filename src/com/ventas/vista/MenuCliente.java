@@ -31,63 +31,71 @@ public class MenuCliente {
 
         switch (opcion) {
             case "1":
-                System.out.println("--Ingrese los requeridos para agregar un nuevo cliente (*^-^*)");
-                System.out.println(" ");
-                System.out.println("Ingrese su Nombre(El nombre no puede contener numeros ni caracteres especiales))");
-                String nombre = entrada.next();
-                System.out.println("Ingrese su edad(debe ser mayor  a 13");
-                int edad = entrada.nextInt();
-                System.out.println("Ingrese su numero de documento");
-                System.out.println("RECUERDE QUE UNA VEZ CREADO EL NUMERO DE DOCUMENTO NO SE PUEDE EDITAR (ㆆ_ㆆ)");
-                int documento = entrada.nextInt();
-                System.out.println("Ingrese su numero de telefono");
-                String telefono = entrada.next();
-                System.out.println("Seleccione su metodo de pago(Tarjeta o Efectivo): ");
-                String metodo = entrada.next().toUpperCase();
+                try {
+                    System.out.println("--Ingrese los requeridos para agregar un nuevo cliente (*^-^*)");
+                    System.out.println(" ");
+                    System.out.println("Ingrese su Nombre(El nombre no puede contener numeros ni caracteres especiales))");
+                    String nombre = entrada.next();
+                    entrada.nextLine();
+                    System.out.println("Ingrese su edad(debe ser mayor  a 13");
+                    int edad = entrada.nextInt();
+                    entrada.nextLine();
+                    System.out.println("Ingrese su numero de documento");
+                    System.out.println("RECUERDE QUE UNA VEZ CREADO EL NUMERO DE DOCUMENTO NO SE PUEDE EDITAR (ㆆ_ㆆ)");
+                    int documento = entrada.nextInt();
+                    entrada.nextLine();
+                    System.out.println("Ingrese su numero de telefono");
+                    String telefono = entrada.next();
+                    entrada.nextLine();
+                    System.out.println("Seleccione su metodo de pago(Tarjeta o Efectivo): ");
+                    String metodo = entrada.next().toUpperCase();
+                    entrada.nextLine();
 
-                if (metodo.equalsIgnoreCase("tarjeta")) {
-                    System.out.println("Ingrese su numero de tarjeta: ");
-                    String tarjeta = entrada.next();
+                    if (metodo.equalsIgnoreCase("tarjeta")) {
+                        System.out.println("Ingrese su numero de tarjeta: ");
+                        String tarjeta = entrada.next();
 
-                    if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo, tarjeta)) {
-                        System.out.println("Cliente agregado exitosamente!(*^_^*)");
+                        if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo, tarjeta)) {
+                            System.out.println("Cliente agregado exitosamente!(*^_^*)");
+                        }
                     }
-                }
 
-                if (metodo.equalsIgnoreCase("efectivo")) {
-                    if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo)) {
-                        System.out.println("Cliente agregado exitosamente!(*^_^*)");
+                    if (metodo.equalsIgnoreCase("efectivo")) {
+                        if (controladorClientes.agregarCliente(nombre, edad, documento, telefono, metodo)) {
+                            System.out.println("Cliente agregado exitosamente!(*^_^*)");
 
+                        }
                     }
-                } else {
-                    System.out.println("Ocurrio un error verifique sus datos :/ ");
-
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Ocurrio un error: " + e.getMessage());
+                } finally {
+                    mostrar();
                 }
-                mostrar();
                 break;
 
             case "2":
-                System.out.println("Ingrese el documento del cliente que desea eliminar");
-                int documentoCliente = entrada.nextInt();
+                try {
+                    System.out.println("Ingrese el documento del cliente que desea eliminar");
+                    int documentoCliente = entrada.nextInt();
 
-                System.out.println("ESTA SEGURO QUE QUIERE ELIMINAR EL CLIENTE? (INGRESE (Y) SI SI (N) SI NO");
-                String confirmacion = entrada.next();
+                    System.out.println("ESTA SEGURO QUE QUIERE ELIMINAR EL CLIENTE? (INGRESE (Y) SI SI (N) SI NO");
+                    String confirmacion = entrada.next();
 
-                if (confirmacion.equalsIgnoreCase("y")) {
-                    if (controladorClientes.eliminarCliente(documentoCliente)) {
-                        System.out.println("Usuario elimnado exitosamente!");
-                    }  
+                    if (confirmacion.equalsIgnoreCase("y")) {
+                        if (controladorClientes.eliminarCliente(documentoCliente)) {
+                            System.out.println("Usuario elimnado exitosamente!");
+                        }
+                    }
+
+                    if (confirmacion.equalsIgnoreCase("n")) {
+                        System.out.println("Muchaas gracias. Volviendo al Menu Cliente! ^_^");
+                    }
+                }catch(IllegalArgumentException e){
+                    System.out.println("Ocurrio un error: " + e.getMessage());
+                }finally{
+                   mostrar(); 
                 }
                 
-                if (confirmacion.equalsIgnoreCase("n")){
-                    System.out.println("Muchaas gracias. Volviendo al Menu Cliente! ^_^");
-                }
-                
-                else {
-                    System.out.println("Ocurio un error al momento de eliminar el cliente, porfavor verifique el documento y vuelva a intentar");
-                    
-                }
-                mostrar();
                 break;
 
             case "3":

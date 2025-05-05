@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class RepositorioCliente {
 
-    private final HashMap<Integer, Cliente> repositorio = new HashMap<>();
+    private static final HashMap<Integer, Cliente> repositorio = new HashMap<>();
 
     public RepositorioCliente() {
     }
@@ -114,4 +114,8 @@ public class RepositorioCliente {
         return repositorio.containsKey(documento);
     }
 
+    public Cliente getCliente(int documento){
+        return repositorio.get(documento);
+    }
+    
 }
