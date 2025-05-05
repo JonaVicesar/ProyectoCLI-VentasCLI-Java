@@ -19,16 +19,25 @@ public class ControladorVenta {
 
     private static final HashMap<Producto, Integer> carritoProductos = new HashMap<>();
     private final RepositorioVentas repositorioVentas;
-    private RepositorioProductos repositorioProductos;
-    private RepositorioCliente repositorioClientes;
+    private final RepositorioProductos repositorioProductos;
+    private final RepositorioCliente repositorioClientes;
     public LocalDate fecha = LocalDate.now();
 
+    /**
+     * 
+     */
     public ControladorVenta() {
         this.repositorioVentas = new RepositorioVentas();
         this.repositorioClientes = new RepositorioCliente();
         this.repositorioProductos = new RepositorioProductos();
     }
 
+    /**
+     * 
+     * @param documentoCliente
+     * @param fecha
+     * @return 
+     */
     public int crearVenta(int documentoCliente, LocalDate fecha) {
         if (!repositorioClientes.existeCliente(documentoCliente)) {
             throw new IllegalArgumentException("El cliente no existe, verifique el documento o cree uno nuevo!");
@@ -55,7 +64,13 @@ public class ControladorVenta {
         limpiarCarrito();
         return idVenta;
     }
-
+    
+    /**
+     * 
+     * @param nombreProducto
+     * @param cantidad
+     * @return 
+     */
     public boolean agregarProductoAlCarrito(String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -89,6 +104,11 @@ public class ControladorVenta {
         return true;
     }
     
+    /**
+     * 
+     * @param nombreProducto
+     * @return 
+     */
     public boolean quitarProductoDelCarrito(String nombreProducto) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -103,6 +123,12 @@ public class ControladorVenta {
         return true;
     }
     
+    /**
+     * 
+     * @param nombreProducto
+     * @param cantidad
+     * @return 
+     */
     public boolean disminuirCantidadEnCarrito(String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -128,6 +154,11 @@ public class ControladorVenta {
         return true;
     }
 
+    /**
+     * 
+     * @param nombreProducto
+     * @return 
+     */
     public Producto obtenerProducto(String nombreProducto) {
         if (!repositorioProductos.existeProducto(nombreProducto)) {
             return null;
@@ -135,14 +166,29 @@ public class ControladorVenta {
         return repositorioProductos.getProducto(nombreProducto);
     }
 
+    /**
+     * 
+     * @return 
+     */
     public HashMap<Producto, Integer> getCarritoProductos() {
         return new HashMap<>(carritoProductos); // Devuelve una copia para evitar modificaciones externas
     }
 
+    /**
+     * 
+     */
     public void limpiarCarrito() {
         carritoProductos.clear();
     }
 
+    
+    /**
+     * 
+     * @param idVenta
+     * @param nombreProducto
+     * @param cantidad
+     * @return 
+     */
     public boolean agregarProductoAVenta(int idVenta, String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -169,6 +215,12 @@ public class ControladorVenta {
         return repositorioVentas.agregarProducto(idVenta, producto, cantidad);
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @param nombreProducto
+     * @return 
+     */
     public boolean eliminarProductoDeVenta(int idVenta, String nombreProducto) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -204,6 +256,13 @@ public class ControladorVenta {
         return eliminado;
     }
     
+    /**
+     * 
+     * @param idVenta
+     * @param nombreProducto
+     * @param cantidad
+     * @return 
+     */
     public boolean disminuirCantidadProductoEnVenta(int idVenta, String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
@@ -244,6 +303,11 @@ public class ControladorVenta {
         return actualizado;
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @return 
+     */
     public boolean eliminarVenta(int idVenta) {
         // Obtener la venta antes de eliminarla para restaurar el stock
         Venta venta = repositorioVentas.obtenerVentaPorId(idVenta);
@@ -261,14 +325,29 @@ public class ControladorVenta {
         return repositorioVentas.eliminarVenta(idVenta);
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @return 
+     */
     public Venta obtenerVentaPorId(int idVenta) {
         return repositorioVentas.obtenerVentaPorId(idVenta);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public List<Venta> listarVentas() {
         return repositorioVentas.listarVentas();
     }
     
+    /**
+     * 
+     * @param desde
+     * @param hasta
+     * @return 
+     */
     public Map<Producto, Integer> generarInformeProductosVendidos(LocalDate desde, LocalDate hasta) {
         return repositorioVentas.generarInformeProductosVendidos(desde, hasta);
     }

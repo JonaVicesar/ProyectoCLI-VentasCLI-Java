@@ -15,7 +15,13 @@ public class ControladorProducto {
     public ControladorProducto() {
 
     }
-
+    /**
+     * 
+     * @param nombre
+     * @param precio
+     * @param cantidad
+     * @return 
+     */
     public boolean agregarProducto(String nombre, double precio, int cantidad) {
         if (repositorio.existeProducto(nombre.trim().toLowerCase())) {
             throw new IllegalArgumentException("El producto ya existe!");
@@ -29,6 +35,11 @@ public class ControladorProducto {
 
     }
 
+    /**
+     * 
+     * @param nombreProducto
+     * @return 
+     */
     public boolean eliminarProducto(String nombreProducto) {
         if (nombreProducto == null || nombreProducto.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
@@ -39,6 +50,12 @@ public class ControladorProducto {
         return repositorio.eliminarProducto(nombreProducto);
     }
 
+    /**
+     * 
+     * @param nombreProducto
+     * @param nuevoNombre
+     * @return 
+     */
     public boolean editarNombre(String nombreProducto, String nuevoNombre) {
         if (nombreProducto == null || nombreProducto.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
@@ -53,6 +70,12 @@ public class ControladorProducto {
         return repositorio.editarNombre(nombreProducto, nuevoNombre);
     }
 
+    /**
+     * 
+     * @param nombreProducto
+     * @param nuevoPrecio
+     * @return 
+     */
     public boolean editarPrecio(String nombreProducto, double nuevoPrecio) {
         if (nombreProducto == null || nombreProducto.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
@@ -69,6 +92,12 @@ public class ControladorProducto {
         return repositorio.editarPrecio(nombreProducto, nuevoPrecio);
     }
 
+    /**
+     * 
+     * @param nombreProducto
+     * @param nuevoStock
+     * @return 
+     */
     public boolean editarStock(String nombreProducto, int nuevoStock) {
         if (nombreProducto == null || nombreProducto.isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puedo estar en blanco o estar vacio");
@@ -89,7 +118,12 @@ public class ControladorProducto {
         return repositorio.editarStock(nombreProducto, nuevoStock);
 
     }
+    
 
+    /**
+     * 
+     * @return 
+     */
     public List<Producto> listaProductos() {
         return repositorio.listaProductos();
     }

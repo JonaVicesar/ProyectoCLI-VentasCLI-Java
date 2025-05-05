@@ -19,6 +19,9 @@ public class Venta {
         calcularTotal();
     }
 
+    /**
+     * 
+     */
     public void calcularTotal() {
         this.total = listaCompras.entrySet().stream()
                 .mapToDouble(entry -> entry.getKey().getPrecio() * entry.getValue())

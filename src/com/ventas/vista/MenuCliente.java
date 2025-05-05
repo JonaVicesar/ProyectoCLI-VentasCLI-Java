@@ -26,6 +26,7 @@ public class MenuCliente {
         seleccionarOpcion();
     }
 
+    
     private void seleccionarOpcion() {
         String opcion = entrada.next();
 

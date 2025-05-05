@@ -13,12 +13,28 @@ public class RepositorioVentas {
     private final HashMap<Integer, Venta> repositorio = new HashMap<>();
     private int idVenta = 1;
 
+    
+    /**
+     * 
+     * @param cliente
+     * @param listaCompras
+     * @param fecha
+     * @return 
+     */
     public int crearVenta(Cliente cliente, HashMap<Producto, Integer> listaCompras, LocalDate fecha) {
         Venta nuevaVenta = new Venta(idVenta, cliente, listaCompras, fecha);
         repositorio.put(idVenta, nuevaVenta);
         return idVenta++;
     }
 
+    
+    /**
+     * 
+     * @param idVenta
+     * @param producto
+     * @param cantidad
+     * @return 
+     */
     public boolean agregarProducto(int idVenta, Producto producto, int cantidad) {
         Venta venta = repositorio.get(idVenta);
         if (venta == null || producto == null || cantidad <= 0) return false;
@@ -29,6 +45,13 @@ public class RepositorioVentas {
         return true;
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @param producto
+     * @param cantidad
+     * @return 
+     */
     public boolean disminuirCantidadProducto(int idVenta, Producto producto, int cantidad) {
         Venta venta = repositorio.get(idVenta);
         if (venta == null || producto == null || cantidad <= 0) return false;
@@ -47,6 +70,12 @@ public class RepositorioVentas {
         return true;
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @param producto
+     * @return 
+     */
     public boolean eliminarProducto(int idVenta, Producto producto) {
         Venta venta = repositorio.get(idVenta);
         if (venta == null || producto == null) return false;
@@ -59,24 +88,50 @@ public class RepositorioVentas {
         return false;
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @return 
+     */
     public boolean eliminarVenta(int idVenta) {
         return repositorio.remove(idVenta) != null;
     }
-
+    
+    /**
+     * 
+     * @param desde
+     * @param hasta
+     * @return 
+     */
     public List<Venta> obtenerVentasEntreFechas(LocalDate desde, LocalDate hasta) {
         return repositorio.values().stream()
             .filter(venta -> !venta.getFecha().isBefore(desde) && !venta.getFecha().isAfter(hasta))
             .collect(Collectors.toList());
     }
 
+    /**
+     * 
+     * @param idVenta
+     * @return 
+     */
     public Venta obtenerVentaPorId(int idVenta) {
         return repositorio.get(idVenta);
     }
     
+    /**
+     * 
+     * @return 
+     */
     public List<Venta> listarVentas() {
         return repositorio.values().stream().collect(Collectors.toList());
     }
     
+    /**
+     * 
+     * @param desde
+     * @param hasta
+     * @return 
+     */
     public Map<Producto, Integer> generarInformeProductosVendidos(LocalDate desde, LocalDate hasta) {
         Map<Producto, Integer> productosVendidos = new HashMap<>();
         

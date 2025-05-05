@@ -44,7 +44,16 @@ public class ControladorCliente {
         return repositorio.agregarCliente(nombre, edad, documento, telefono, metodo);
 
     }
-    
+    /**
+     * 
+     * @param nombre
+     * @param edad
+     * @param documento
+     * @param telefono
+     * @param metodo
+     * @param tarjeta
+     * @return 
+     */
     public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo, String tarjeta) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacio");
@@ -64,6 +73,11 @@ public class ControladorCliente {
 
     }
 
+    /**
+     * 
+     * @param documento
+     * @return 
+     */
     public boolean eliminarCliente(int documento) {
         if (documento < 100000) {
             throw new IllegalArgumentException("Numero de documento incorrecto");

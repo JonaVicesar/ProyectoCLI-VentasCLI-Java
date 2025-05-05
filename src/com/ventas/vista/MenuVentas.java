@@ -10,55 +10,59 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Menú para la gestión de ventas
+ * Menu para la gestion de ventas
+ *
  * @author Jona Vicesar
  */
 public class MenuVentas {
+
     private final Scanner entrada = new Scanner(System.in);
     private final ControladorVenta controladorVentas = new ControladorVenta();
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
-     * Muestra el menú de ventas y maneja la selección de opciones
+     * Muestra el menu de ventas y maneja la selecciin de opciones
      */
     public void mostrar() {
-        boolean salir = false;
+        System.out.println("MENU VENTAS ");
+        System.out.println("1 - Crear Nueva Venta");
+        System.out.println("2 - Listar Ventas");
+        System.out.println("3 - Ver Detalle de Venta");
+        System.out.println("4 - Eliminar Venta");
+        System.out.println("5 - Informe de Productos Vendidos");
+        System.out.println("6 - Volver al Menu Principal");
+        System.out.print("Seleccione una opción: ");
         
-        while (!salir) {
-            System.out.println("MENU VENTAS ");
-            System.out.println("1 - Crear Nueva Venta");
-            System.out.println("2 - Listar Ventas");
-            System.out.println("3 - Ver Detalle de Venta");
-            System.out.println("4 - Eliminar Venta");
-            System.out.println("5 - Informe de Productos Vendidos");
-            System.out.println("6 - Volver al Menu Principal");
-            System.out.print("Seleccione una opción: ");
-            
-            String opcion = entrada.nextLine();
-            
-            switch (opcion) {
-                case "1":
-                    crearNuevaVenta();
-                    break;
-                case "2":
-                    listarVentas();
-                    break;
-                case "3":
-                    verDetalleVenta();
-                    break;
-                case "4":
-                    eliminarVenta();
-                    break;
-                case "5":
-                    hacerInformeProductosVendidos();
-                    break;
-                case "6":
-                    salir = true;
-                    break;
-                default:
-                    System.out.println("Opcion invalida. Por favor intente nuevamente ￣へ￣");
-                    break;
-            }
+        seleccionarOpcion();
+
+    }
+
+    public void seleccionarOpcion() {
+        String opcion = entrada.nextLine();
+
+        switch (opcion) {
+            case "1":
+                crearNuevaVenta();
+                break;
+            case "2":
+                listarVentas();
+                break;
+            case "3":
+                verDetalleVenta();
+                break;
+            case "4":
+                eliminarVenta();
+                break;
+            case "5":
+                hacerInformeProductosVendidos();
+                break;
+            case "6":
+                MenuPrincipal menu = new MenuPrincipal();
+                mostrar();
+                break;
+            default:
+                System.out.println("Opcion invalida. Por favor intente nuevamente ￣へ￣");
+                break;
         }
     }
 
@@ -68,10 +72,10 @@ public class MenuVentas {
     private void crearNuevaVenta() {
         try {
             System.out.println("\nCREAR NUEVA VENTA");
-            
+
             // Limpiar el carrito por si acaso
             controladorVentas.limpiarCarrito();
-            
+
             System.out.print("Ingrese el documento del cliente: ");
             int documento = Integer.parseInt(entrada.nextLine());
 
@@ -98,7 +102,7 @@ public class MenuVentas {
             if (!controladorVentas.getCarritoProductos().isEmpty()) {
                 System.out.println("\nResumen de la compra:");
                 mostrarCarrito();
-                
+
                 System.out.print("¿Confirmar venta? (S/N): ");
                 if (entrada.nextLine().equalsIgnoreCase("S")) {
                     int idVenta = controladorVentas.crearVenta(documento, LocalDate.now());
@@ -124,29 +128,29 @@ public class MenuVentas {
     private void mostrarCarrito() {
         System.out.println("\nCARRITO DE COMPRAS");
         Map<Producto, Integer> carrito = controladorVentas.getCarritoProductos();
-        
+
         if (carrito.isEmpty()) {
-            System.out.println("El carrito está vacío.");
+            System.out.println("El carrito esta vacio.");
             return;
         }
-        
+
         double total = 0;
         System.out.printf("%-20s %-10s %-10s %-10s%n", "PRODUCTO", "CANTIDAD", "PRECIO", "SUBTOTAL");
         System.out.println("----------------------------------------------------");
-        
+
         for (Map.Entry<Producto, Integer> entry : carrito.entrySet()) {
             Producto producto = entry.getKey();
             int cantidad = entry.getValue();
             double subtotal = producto.getPrecio() * cantidad;
             total += subtotal;
-            
-            System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n", 
-                    producto.getNombre(), 
-                    cantidad, 
-                    producto.getPrecio(), 
+
+            System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n",
+                    producto.getNombre(),
+                    cantidad,
+                    producto.getPrecio(),
                     subtotal);
         }
-        
+
         System.out.println("----------------------------------------------------");
         System.out.printf("TOTAL: $%.2f%n", total);
     }
@@ -156,20 +160,20 @@ public class MenuVentas {
      */
     private void listarVentas() {
         System.out.println("\n==== LISTA DE VENTAS ====");
-        
+
         if (controladorVentas.listarVentas().isEmpty()) {
             System.out.println("No hay ventas registradas.");
             return;
         }
-        
+
         System.out.printf("%-5s %-15s %-15s %-10s%n", "ID", "CLIENTE", "FECHA", "TOTAL");
         System.out.println("---------------------------------------------------");
-        
+
         for (Venta venta : controladorVentas.listarVentas()) {
-            System.out.printf("%-5d %-15s %-15s $%-9.2f%n", 
-                    venta.getIdVenta(), 
-                    venta.getCliente().getNombreCompleto(), 
-                    venta.getFecha().format(dateFormatter), 
+            System.out.printf("%-5d %-15s %-15s $%-9.2f%n",
+                    venta.getIdVenta(),
+                    venta.getCliente().getNombreCompleto(),
+                    venta.getFecha().format(dateFormatter),
                     venta.getTotal());
         }
     }
@@ -180,18 +184,18 @@ public class MenuVentas {
     private void verDetalleVenta() {
         System.out.println("\nDETALLE DE VENTA");
         System.out.print("Ingrese el ID de la venta: ");
-        
+
         try {
             int idVenta = Integer.parseInt(entrada.nextLine());
             Venta venta = controladorVentas.obtenerVentaPorId(idVenta);
-            
+
             if (venta != null) {
                 imprimirTicket(venta);
             } else {
                 System.out.println("No se encontró la venta con ID " + idVenta);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Error: ID de venta inválido.");
+            System.out.println("Error: ID de venta invalido.");
         }
     }
 
@@ -201,15 +205,15 @@ public class MenuVentas {
     private void eliminarVenta() {
         System.out.println("\nELIMINAR VENTA");
         System.out.print("Ingrese el ID de la venta a eliminar: ");
-        
+
         try {
             int idVenta = Integer.parseInt(entrada.nextLine());
             Venta venta = controladorVentas.obtenerVentaPorId(idVenta);
-            
+
             if (venta != null) {
                 System.out.println("Detalles de la venta a eliminar:");
                 imprimirTicket(venta);
-                
+
                 System.out.print("¿Está seguro que desea eliminar esta venta? (S/N): ");
                 if (entrada.nextLine().equalsIgnoreCase("S")) {
                     if (controladorVentas.eliminarVenta(idVenta)) {
@@ -218,13 +222,13 @@ public class MenuVentas {
                         System.out.println("No se pudo eliminar la venta.");
                     }
                 } else {
-                    System.out.println("Operación cancelada.");
+                    System.out.println("Operacion cancelada.");
                 }
             } else {
-                System.out.println("No se encontró la venta con ID " + idVenta);
+                System.out.println("No se encontro la venta con ID " + idVenta);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Error: ID de venta inválido.");
+            System.out.println("Error: ID de venta invalido.");
         }
     }
 
@@ -233,50 +237,50 @@ public class MenuVentas {
      */
     private void hacerInformeProductosVendidos() {
         System.out.println("\nINFORME DE PRODUCTOS VENDIDOS");
-        
+
         try {
             System.out.print("Ingrese la fecha desde (DD/MM/AAAA): ");
             LocalDate fechaDesde = LocalDate.parse(entrada.nextLine(), dateFormatter);
-            
+
             System.out.print("Ingrese la fecha hasta (DD/MM/AAAA): ");
             LocalDate fechaHasta = LocalDate.parse(entrada.nextLine(), dateFormatter);
-            
+
             if (fechaHasta.isBefore(fechaDesde)) {
                 System.out.println("Error: La fecha hasta no puede ser anterior a la fecha desde.");
                 return;
             }
-            
+
             Map<Producto, Integer> informe = controladorVentas.generarInformeProductosVendidos(fechaDesde, fechaHasta);
-            
+
             if (informe.isEmpty()) {
                 System.out.println("No hay productos vendidos en el rango de fechas especificado.");
                 return;
             }
-            
-            System.out.println("\nInforme de productos vendidos desde " + 
-                    fechaDesde.format(dateFormatter) + " hasta " + 
-                    fechaHasta.format(dateFormatter));
-            
+
+            System.out.println("\nInforme de productos vendidos desde "
+                    + fechaDesde.format(dateFormatter) + " hasta "
+                    + fechaHasta.format(dateFormatter));
+
             System.out.printf("%-20s %-10s %-10s %-10s%n", "PRODUCTO", "CANTIDAD", "PRECIO", "TOTAL");
             System.out.println("----------------------------------------------------");
-            
+
             double granTotal = 0;
             for (Map.Entry<Producto, Integer> entry : informe.entrySet()) {
                 Producto producto = entry.getKey();
                 int cantidad = entry.getValue();
                 double subtotal = producto.getPrecio() * cantidad;
                 granTotal += subtotal;
-                
-                System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n", 
-                        producto.getNombre(), 
-                        cantidad, 
-                        producto.getPrecio(), 
+
+                System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n",
+                        producto.getNombre(),
+                        cantidad,
+                        producto.getPrecio(),
                         subtotal);
             }
-            
+
             System.out.println("----------------------------------------------------");
             System.out.printf("TOTAL VENTAS: $%.2f%n", granTotal);
-            
+
         } catch (DateTimeParseException e) {
             System.out.println("Error: Formato de fecha inválido. Use DD/MM/AAAA.");
         }
@@ -284,6 +288,7 @@ public class MenuVentas {
 
     /**
      * Imprime un ticket de venta
+     *
      * @param venta Venta a imprimir
      */
     private void imprimirTicket(Venta venta) {
@@ -295,16 +300,16 @@ public class MenuVentas {
         System.out.println("----------------------------------------");
         System.out.printf("%-20s %-10s %-10s %-10s%n", "PRODUCTO", "CANTIDAD", "PRECIO", "SUBTOTAL");
         System.out.println("----------------------------------------");
-        
+
         venta.getListaCompras().forEach((producto, cantidad) -> {
             double subtotal = producto.getPrecio() * cantidad;
-            System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n", 
-                    producto.getNombre(), 
-                    cantidad, 
-                    producto.getPrecio(), 
+            System.out.printf("%-20s %-10d $%-9.2f $%-9.2f%n",
+                    producto.getNombre(),
+                    cantidad,
+                    producto.getPrecio(),
                     subtotal);
         });
-        
+
         System.out.println("----------------------------------------");
         System.out.printf("TOTAL: $%.2f%n", venta.getTotal());
         System.out.println("========================================");
