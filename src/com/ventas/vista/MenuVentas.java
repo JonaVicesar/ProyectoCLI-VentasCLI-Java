@@ -106,7 +106,7 @@ public class MenuVentas {
                 System.out.print("¿Confirmar venta? (S/N): ");
                 if (entrada.nextLine().equalsIgnoreCase("S")) {
                     int idVenta = controladorVentas.crearVenta(documento, LocalDate.now());
-                    System.out.println("Venta creada exitosamente. ID de Venta: " + idVenta);
+                    System.out.println("Venta creada exitosamente^-^. \nID de Venta: " + idVenta);
                     imprimirTicket(controladorVentas.obtenerVentaPorId(idVenta));
                 } else {
                     System.out.println("Venta cancelada.");
