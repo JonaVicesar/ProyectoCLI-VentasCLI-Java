@@ -119,7 +119,7 @@ public class MenuProductos {
                         System.out.println("Nombre actualizado con exito! ^_^");
                     }
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ocurrió un error: " + e.getMessage());
+                    System.out.println("Ocurrio un error: " + e.getMessage());
                 } finally {
                     menuEditarProducto();
                 }
@@ -140,7 +140,7 @@ public class MenuProductos {
                     }
 
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ocurrió un error: " + e.getMessage());
+                    System.out.println("Ocurrio un error: " + e.getMessage());
                 } finally {
                     menuEditarProducto();
                 }
@@ -157,10 +157,10 @@ public class MenuProductos {
                     entrada.nextLine();
                     
                     if(producto.editarStock(nombreProducto, nuevoStock)){
-                        System.out.println("Stock editado con éxito! ^_^");
+                        System.out.println("Stock editado con xeito! ^_^");
                     }
                 }catch(IllegalArgumentException e){
-                    System.out.println("Ocurrió un error: " + e.getMessage());
+                    System.out.println("Ocurrio un error: " + e.getMessage());
                 }
                 finally{
                     menuEditarProducto();

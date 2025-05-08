@@ -31,7 +31,7 @@ public class MenuVentas {
         System.out.println("4 - Eliminar Venta");
         System.out.println("5 - Informe de Productos Vendidos");
         System.out.println("6 - Volver al Menu Principal");
-        System.out.print("Seleccione una opción: ");
+        System.out.print("Seleccione una opcion: ");
         
         seleccionarOpcion();
 
@@ -116,7 +116,7 @@ public class MenuVentas {
                 System.out.println("No hay productos en el carrito. Venta cancelada.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Error: Formato de número inválido.");
+            System.out.println("Error: Formato de numero invalido.");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -214,7 +214,8 @@ public class MenuVentas {
                 System.out.println("Detalles de la venta a eliminar:");
                 imprimirTicket(venta);
 
-                System.out.print("¿Está seguro que desea eliminar esta venta? (S/N): ");
+                System.out.print("¿Esta seguro que desea eliminar esta venta? (S/N): ");
+                
                 if (entrada.nextLine().equalsIgnoreCase("S")) {
                     if (controladorVentas.eliminarVenta(idVenta)) {
                         System.out.println("Venta eliminada exitosamente.");
