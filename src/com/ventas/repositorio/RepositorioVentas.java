@@ -4,16 +4,15 @@ import com.ventas.modelo.Cliente;
 import com.ventas.modelo.Producto;
 import com.ventas.modelo.Venta;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RepositorioVentas {
-    private final HashMap<Integer, Venta> repositorio = new HashMap<>();
-    private int idVenta = 1;
-
-    
+    private static final HashMap<Integer, Venta> repositorio = new HashMap<>();
+    private static int idVenta = 1;
     /**
      * 
      * @param cliente
@@ -123,7 +122,8 @@ public class RepositorioVentas {
      * @return 
      */
     public List<Venta> listarVentas() {
-        return repositorio.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(repositorio.values());
+       
     }
     
     /**

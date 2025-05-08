@@ -43,25 +43,31 @@ public class MenuVentas {
         switch (opcion) {
             case "1":
                 crearNuevaVenta();
+                mostrar();
                 break;
             case "2":
                 listarVentas();
+                mostrar();
                 break;
             case "3":
                 verDetalleVenta();
+                mostrar();
                 break;
             case "4":
                 eliminarVenta();
+                mostrar();
                 break;
             case "5":
                 hacerInformeProductosVendidos();
+                mostrar();
                 break;
             case "6":
                 MenuPrincipal menu = new MenuPrincipal();
-                mostrar();
+                menu.mostrar();
                 break;
             default:
                 System.out.println("Opcion invalida. Por favor intente nuevamente ￣へ￣");
+                mostrar();
                 break;
         }
     }
@@ -246,7 +252,7 @@ public class MenuVentas {
             System.out.print("Ingrese la fecha hasta (DD/MM/AAAA): ");
             LocalDate fechaHasta = LocalDate.parse(entrada.nextLine(), dateFormatter);
 
-            if (fechaHasta.isBefore(fechaDesde)) {
+             if (fechaHasta.isBefore(fechaDesde)) {
                 System.out.println("Error: La fecha hasta no puede ser anterior a la fecha desde.");
                 return;
             }

@@ -2,6 +2,7 @@ package com.ventas.vista;
 
 import com.ventas.controlador.ControladorCliente;
 import com.ventas.modelo.Cliente;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -76,7 +77,8 @@ public class MenuCliente {
 
             case "2":
                 try {
-                    System.out.println("Ingrese el documento del cliente que desea eliminar");
+                    System.out.println("Ingrese el documento del cliente que desea eliminar: ");
+
                     int documentoCliente = entrada.nextInt();
 
                     System.out.println("ESTA SEGURO QUE QUIERE ELIMINAR EL CLIENTE? (INGRESE (Y) SI SI (N) SI NO");
@@ -93,10 +95,16 @@ public class MenuCliente {
                     }
                 }catch(IllegalArgumentException e){
                     System.out.println("Ocurrio un error: " + e.getMessage());
-                }finally{
-                   mostrar(); 
+                    mostrar();
+                    
+                            
+                }catch(InputMismatchException e){
+                    System.out.println("Ingrese NUMEROS no otros caracteres");
+                    mostrar();
+                    
                 }
-                
+
+                mostrar();
                 break;
 
             case "3":
@@ -170,10 +178,6 @@ public class MenuCliente {
                 System.out.println("Opcion Invalida ￣へ￣");
                 break;
         }
-    }
-
-    private void metodoPago() {
-        System.out.println("");
     }
 
     private void listarClientes() {
