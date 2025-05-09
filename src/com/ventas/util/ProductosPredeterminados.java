@@ -7,7 +7,7 @@ package com.ventas.util;
 public class ProductosPredeterminados {
     
     public ProductosPredeterminados(){
-    
+    Hash
         
        
     }

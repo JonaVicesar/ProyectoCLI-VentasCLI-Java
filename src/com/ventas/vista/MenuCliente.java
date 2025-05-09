@@ -121,6 +121,9 @@ public class MenuCliente {
                 menu.mostrar();
                 break;
 
+            default :
+                System.out.println("Opcion Incorrecta. Vuelva a Intentar");
+                mostrar();
         }
     }
 
