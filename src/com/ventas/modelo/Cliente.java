@@ -1,11 +1,14 @@
 package com.ventas.modelo;
 
 /**
- *
+ * Clase que representa a un Cliente dentro del sistema de ventas.
+ * Contiene datos personales y de pago.
+ * 
  * @author Jona Vicesar
  */
 public class Cliente {
 
+    // Atributos privados del cliente
     private String nombreCompleto;
     private String metodoPago;
     private String tarjeta;
@@ -13,16 +16,21 @@ public class Cliente {
     private int documento;
     private String telefono;
 
+    /**
+     * Constructor por defecto. Inicializa el nombre como "No identificado".
+     */
     public Cliente() {
         this.nombreCompleto = "No identificado";
     }
 
     /**
+     * Constructor para clientes sin tarjeta asociada.
      *
-     * @param nombreCompleto
-     * @param edad
-     * @param documento
-     * @param telefono
+     * @param nombreCompleto Nombre completo del cliente
+     * @param edad Edad del cliente
+     * @param documento Número de documento del cliente
+     * @param telefono Teléfono del cliente
+     * @param metodoPago Método de pago (por ejemplo: "Efectivo", "Tarjeta", etc.)
      */
     public Cliente(String nombreCompleto, int edad, int documento, String telefono, String metodoPago) {
         this.nombreCompleto = nombreCompleto;
@@ -31,15 +39,16 @@ public class Cliente {
         this.telefono = telefono;
         this.metodoPago = metodoPago;
     }
-    
+
     /**
-     * 
-     * @param nombreCompleto
-     * @param edad
-     * @param documento
-     * @param telefono
-     * @param metodoPago
-     * @param tarjeta 
+     * Constructor para clientes que pagan con tarjeta.
+     *
+     * @param nombreCompleto Nombre completo del cliente
+     * @param edad Edad del cliente
+     * @param documento Número de documento del cliente
+     * @param telefono Teléfono del cliente
+     * @param metodoPago Método de pago
+     * @param tarjeta Número de tarjeta del cliente (si aplica)
      */
     public Cliente(String nombreCompleto, int edad, int documento, String telefono, String metodoPago, String tarjeta) {
         this.nombreCompleto = nombreCompleto;
@@ -48,8 +57,9 @@ public class Cliente {
         this.telefono = telefono;
         this.metodoPago = metodoPago;
         this.tarjeta = tarjeta;
-
     }
+
+    // Getters y setters
 
     public String getTarjeta() {
         return tarjeta;
@@ -67,70 +77,42 @@ public class Cliente {
         this.metodoPago = metodoPago;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNombreCompleto() {
         return nombreCompleto;
     }
 
-    /**
-     *
-     * @param nombreCompleto
-     */
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getEdad() {
         return edad;
     }
 
-    /**
-     *
-     * @param edad
-     */
     public void setEdad(int edad) {
         this.edad = edad;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getDocumento() {
         return documento;
     }
 
-    /**
-     *
-     * @param documento
-     */
     public void setDocumento(int documento) {
         this.documento = documento;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getTelefono() {
         return telefono;
     }
 
-    /**
-     *
-     * @param telefono
-     */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
+    /**
+     * Devuelve una representación en texto del cliente.
+     * Útil para impresión o debugging.
+     */
     @Override
     public String toString() {
         return "Cliente" + "\n nombre = " + nombreCompleto

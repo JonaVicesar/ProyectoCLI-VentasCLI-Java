@@ -4,27 +4,34 @@ import com.ventas.modelo.Producto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.ventas.repositorio.RepositorioCliente;
-import com.ventas.repositorio.RepositorioProductos;
 
 /**
- *
+ * Clase que actúa como repositorio de productos.
+ * Administra un conjunto de productos utilizando un HashMap,
+ * con el nombre del producto como clave (en minúsculas).
+ * También se encarga de asignar IDs automáticamente.
+ * 
  * @author Jona Vicesar
  */
 public class RepositorioProductos {
 
+    // HashMap que almacena los productos, usando el nombre como clave (case-insensitive)
     public static final HashMap<String, Producto> repositorio = new HashMap<>();
+
+    // Contador interno para generar IDs únicos
     private int contadorId = 1;
 
     public RepositorioProductos() {
     }
 
     /**
+     * Agrega un nuevo producto al repositorio.
+     * El ID es asignado automáticamente.
      * 
-     * @param nombre
-     * @param precio
-     * @param cantidad
-     * @return 
+     * @param nombre Nombre del producto
+     * @param precio Precio unitario
+     * @param cantidad Stock disponible
+     * @return true si se agregó correctamente
      */
     public boolean agregarProducto(String nombre, double precio, int cantidad) {
         Producto producto = new Producto(nombre, contadorId, precio, cantidad);
@@ -34,20 +41,22 @@ public class RepositorioProductos {
     }
 
     /**
+     * Elimina un producto del repositorio por su nombre.
      * 
-     * @param nombre
-     * @return 
+     * @param nombre Nombre del producto a eliminar
+     * @return true si fue eliminado exitosamente
      */
     public boolean eliminarProducto(String nombre) {
-        repositorio.remove(nombre);
+        repositorio.remove(nombre.toLowerCase());
         return true;
     }
 
     /**
+     * Cambia el nombre de un producto existente.
      * 
-     * @param nombreProducto
-     * @param nuevoNombre
-     * @return 
+     * @param nombreProducto Nombre actual
+     * @param nuevoNombre Nuevo nombre
+     * @return true si se edita correctamente
      */
     public boolean editarNombre(String nombreProducto, String nuevoNombre) {
         Producto producto = repositorio.remove(nombreProducto.toLowerCase());
@@ -57,76 +66,77 @@ public class RepositorioProductos {
     }
 
     /**
+     * Cambia el precio de un producto existente.
      * 
-     * @param nombreProducto
-     * @param nuevoPrecio
-     * @return 
+     * @param nombreProducto Nombre del producto
+     * @param nuevoPrecio Nuevo precio
+     * @return true si se actualizó correctamente
      */
     public boolean editarPrecio(String nombreProducto, double nuevoPrecio) {
-        Producto productoAEditar = repositorio.get(nombreProducto);
+        Producto productoAEditar = repositorio.get(nombreProducto.toLowerCase());
         productoAEditar.setPrecio(nuevoPrecio);
-        repositorio.replace(nombreProducto, productoAEditar);
+        repositorio.replace(nombreProducto.toLowerCase(), productoAEditar);
         return true;
     }
 
     /**
+     * Cambia el stock de un producto existente.
      * 
-     * @param nombreProducto
-     * @param nuevoStock
-     * @return 
+     * @param nombreProducto Nombre del producto
+     * @param nuevoStock Nuevo valor de stock
+     * @return true si se actualizó correctamente
      */
     public boolean editarStock(String nombreProducto, int nuevoStock) {
-        Producto productoAEditar = repositorio.get(nombreProducto);
+        Producto productoAEditar = repositorio.get(nombreProducto.toLowerCase());
         productoAEditar.setCantidad(nuevoStock);
-        repositorio.replace(nombreProducto, productoAEditar);
+        repositorio.replace(nombreProducto.toLowerCase(), productoAEditar);
         return true;
     }
 
     /**
+     * Verifica si existe un producto con el nombre dado.
      * 
-     * @param nombre
-     * @return 
+     * @param nombre Nombre del producto
+     * @return true si existe
      */
     public boolean existeProducto(String nombre) {
         return repositorio.containsKey(nombre.toLowerCase());
     }
 
     /**
+     * Devuelve un producto específico por nombre.
      * 
-     * @param nombre
-     * @return 
+     * @param nombre Nombre del producto
+     * @return El objeto Producto, o null si no existe
      */
     public Producto getProducto(String nombre) {
-        return repositorio.get(nombre);
+        return repositorio.get(nombre.toLowerCase());
     }
 
     /**
-     * Actualiza el stock de un producto específico
-     *
-     * @param nombreProducto Nombre del producto a actualizar
-     * @param nuevoStock Nuevo valor de stock para el producto
-     * @return true si la actualización fue exitosa, false en caso contrario
+     * Actualiza el stock de un producto existente.
+     * Rechaza valores negativos y productos inexistentes.
+     * 
+     * @param nombreProducto Nombre del producto
+     * @param nuevoStock Nuevo valor de stock
+     * @return true si se actualizó correctamente, false si el producto no existe o el stock es negativo
      */
     public boolean actualizarStock(String nombreProducto, int nuevoStock) {
-        if (nuevoStock < 0) {
-            return false; // No permitir stock negativo
-        }
+        if (nuevoStock < 0) return false;
 
         Producto producto = repositorio.get(nombreProducto.toLowerCase());
-        if (producto == null) {
-            return false; // El producto no existe
-        }
+        if (producto == null) return false;
 
         producto.setCantidad(nuevoStock);
         return true;
     }
 
     /**
+     * Devuelve una lista con todos los productos registrados.
      * 
-     * @return 
+     * @return Lista de objetos Producto
      */
     public List<Producto> listaProductos() {
         return new ArrayList<>(repositorio.values());
     }
-
 }

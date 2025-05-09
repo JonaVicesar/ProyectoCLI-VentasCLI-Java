@@ -6,20 +6,28 @@ import com.ventas.modelo.Producto;
 import java.util.List;
 
 /**
- *
+ * Clase que representa la interfaz de usuario para la gestión de productos.
+ * Permite crear, editar, eliminar y listar productos mediante la consola.
+ * Se comunica con el controlador de productos.
+ * 
  * @author Jona Vicesar
  */
 public class MenuProductos {
 
     public Scanner entrada = new Scanner(System.in);
+
+    // Controlador que maneja la lógica de negocio para productos
     public ControladorProducto producto = new ControladorProducto();
 
     public MenuProductos() {
     }
 
+    /**
+     * Muestra el menú principal para productos.
+     */
     public void mostrar() {
         System.out.println("#MENU PRODUCTOS");
-        System.out.println("Seleccione una opcion");
+        System.out.println("Seleccione una opcion:");
         System.out.println("1 - Crear un Producto");
         System.out.println("2 - Editar un Producto");
         System.out.println("3 - Eliminar un Producto");
@@ -29,94 +37,109 @@ public class MenuProductos {
         seleccionarOpcion();
     }
 
+    /**
+     * Maneja la opción seleccionada en el menú principal.
+     */
     private void seleccionarOpcion() {
         String opcion = entrada.next();
 
         switch (opcion) {
             case "1":
+                // Agregar producto
                 try {
-                    System.out.println("Ingrese los datos del producto: ");
-                    System.out.println("Nombre del Producto: ");
+                    System.out.println("Ingrese los datos del producto:");
+                    System.out.print("Nombre del Producto: ");
                     String nombre = entrada.next();
-                    System.out.println("Precio unitario del producto: ");
+
+                    System.out.print("Precio unitario del producto: ");
                     double precio = entrada.nextDouble();
-                    System.out.println("Stock del Producto: ");
+
+                    System.out.print("Stock del Producto: ");
                     int stock = entrada.nextInt();
 
                     if (producto.agregarProducto(nombre, precio, stock)) {
-                        System.out.println("Producto agregado exitosamente! *^____^*");
+                        System.out.println("¡Producto agregado exitosamente! *^____^*");
                     }
                 } catch (IllegalArgumentException e) {
                     System.out.println("Ocurrio un error: " + e.getMessage());
                 } finally {
                     mostrar();
                 }
-
                 break;
 
             case "2":
+                // Ir al submenú de edición
                 this.menuEditarProducto();
                 break;
 
             case "3":
+                // Eliminar producto
                 try {
                     System.out.print("Ingrese el nombre del producto que desea eliminar: ");
                     String nombreProducto = entrada.next();
+
                     if (producto.eliminarProducto(nombreProducto)) {
-                        System.out.print("Producto eliminado exitosamente! ^0^ ");
+                        System.out.println("¡Producto eliminado exitosamente! ^0^");
                     }
                 } catch (IllegalArgumentException e) {
                     System.out.println("Ocurrio un error: " + e.getMessage());
                 } finally {
                     mostrar();
                 }
-
                 break;
 
             case "4":
+                // Listar productos
                 listarProductos();
                 mostrar();
                 break;
 
             case "5":
+                // Volver al menú principal
                 MenuPrincipal menu = new MenuPrincipal();
                 menu.mostrar();
                 break;
 
             default:
-                System.out.print("Opcion Invalida pedazo de alcornoque!");
+                System.out.print("¡Opción invalida, pedazo de alcornoque!");
                 mostrar();
                 break;
         }
     }
 
+    /**
+     * Muestra el submenú de edición de productos.
+     */
     public void menuEditarProducto() {
         System.out.println("#EDITAR PRODUCTO");
-        System.out.println("Seleccione una opcion: ");
+        System.out.println("Seleccione una opción:");
         System.out.println("1 - Cambiar Nombre de Producto");
         System.out.println("2 - Cambiar Precio");
         System.out.println("3 - Agregar o Disminuir Stock");
-        System.out.println("4 - Volver al MENU PRODUCTOS");
+        System.out.println("4 - Volver al MENÚ PRODUCTOS");
 
         seleccionarMenuEditar();
-
     }
 
+    /**
+     * Maneja la opción seleccionada en el menú de edición.
+     */
     private void seleccionarMenuEditar() {
         String opcion = entrada.next();
 
         switch (opcion) {
             case "1":
+                // Editar nombre
                 try {
-                    System.out.println("Ingrese el nombre actual del producto:");
+                    System.out.print("Ingrese el nombre actual del producto: ");
                     entrada.nextLine();
-                    String nombreActual = entrada.nextLine().trim(); 
+                    String nombreActual = entrada.nextLine().trim();
 
-                    System.out.println("Ingrese el nuevo nombre:");
-                    String nuevoNombre = entrada.nextLine().trim(); 
+                    System.out.print("Ingrese el nuevo nombre: ");
+                    String nuevoNombre = entrada.nextLine().trim();
 
                     if (producto.editarNombre(nombreActual, nuevoNombre)) {
-                        System.out.println("Nombre actualizado con exito! ^_^");
+                        System.out.println("¡Nombre actualizado con exito! ^_^");
                     }
                 } catch (IllegalArgumentException e) {
                     System.out.println("Ocurrio un error: " + e.getMessage());
@@ -126,17 +149,18 @@ public class MenuProductos {
                 break;
 
             case "2":
+                // Editar precio
                 try {
-                    System.out.println("Ingrese el nombre del producto que quiere editar: ");
-                    entrada.nextLine(); 
-                    String nombreProducto = entrada.nextLine().trim(); 
+                    System.out.print("Ingrese el nombre del producto a editar: ");
+                    entrada.nextLine();
+                    String nombreProducto = entrada.nextLine().trim();
 
                     System.out.print("Ingrese el nuevo precio del producto: ");
                     double nuevoPrecio = entrada.nextDouble();
                     entrada.nextLine();
 
                     if (producto.editarPrecio(nombreProducto, nuevoPrecio)) {
-                        System.out.println("Precio editado con éxito! ^_^");
+                        System.out.println("¡Precio editado con exito! ^_^");
                     }
 
                 } catch (IllegalArgumentException e) {
@@ -147,22 +171,22 @@ public class MenuProductos {
                 break;
 
             case "3":
-                try{
-                    System.out.println("Ingrese el nombre del prodcto que va a editar: ");
+                // Editar stock
+                try {
+                    System.out.print("Ingrese el nombre del producto que va a editar: ");
                     entrada.nextLine();
-                    String nombreProducto = entrada.nextLine().trim(); 
-                    
-                    System.out.println("Ingrese el nuevo stock");
+                    String nombreProducto = entrada.nextLine().trim();
+
+                    System.out.print("Ingrese el nuevo stock: ");
                     int nuevoStock = entrada.nextInt();
                     entrada.nextLine();
-                    
-                    if(producto.editarStock(nombreProducto, nuevoStock)){
-                        System.out.println("Stock editado con xeito! ^_^");
+
+                    if (producto.editarStock(nombreProducto, nuevoStock)) {
+                        System.out.println("¡Stock editado con exito! ^_^");
                     }
-                }catch(IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     System.out.println("Ocurrio un error: " + e.getMessage());
-                }
-                finally{
+                } finally {
                     menuEditarProducto();
                 }
                 break;
@@ -172,13 +196,17 @@ public class MenuProductos {
                 break;
 
             default:
-                System.out.print("No es una opcion valida");
+                System.out.println("No es una opcion valida.");
                 menuEditarProducto();
         }
     }
 
+    /**
+     * Lista todos los productos disponibles en el sistema, con formato tabular.
+     */
     public void listarProductos() {
         List<Producto> listaProducto = producto.listaProductos();
+
         System.out.println("\n### LISTA DE PRODUCTOS ###");
 
         if (listaProducto.isEmpty()) {
@@ -186,12 +214,12 @@ public class MenuProductos {
             return;
         }
 
-        // Encabezado de la tabla
+        // Encabezado de tabla
         System.out.printf("%-8s | %-30s | %-10s | %-8s%n",
                 "ID", "NOMBRE", "PRECIO", "STOCK");
         System.out.println("-------------------------------------------------------");
 
-        // Datos de los productos
+        // Datos de cada producto
         for (Producto p : listaProducto) {
             System.out.printf("%-8d | %-30s | %-10.2f | %-8d%n",
                     p.getId(),

@@ -12,19 +12,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Controlador encargado de manejar la lógica de ventas, incluyendo el uso de un carrito,
+ * validaciones, actualizaciones de stock y operaciones relacionadas a las ventas.
+ * Forma parte del patrón MVC.
+ * 
  * @author Jona Vicesar
  */
 public class ControladorVenta {
 
+    // Carrito compartido donde se agregan productos antes de confirmar la venta
     private static final HashMap<Producto, Integer> carritoProductos = new HashMap<>();
+    
+    // Repositorios para acceder a los datos de ventas, productos y clientes
     private final RepositorioVentas repositorioVentas;
     private final RepositorioProductos repositorioProductos;
     private final RepositorioCliente repositorioClientes;
+
+    // Fecha actual (puede modificarse para pruebas o ventas manuales)
     public LocalDate fecha = LocalDate.now();
 
     /**
-     * 
+     * Constructor que inicializa los repositorios.
      */
     public ControladorVenta() {
         this.repositorioVentas = new RepositorioVentas();
@@ -33,10 +41,12 @@ public class ControladorVenta {
     }
 
     /**
-     * 
-     * @param documentoCliente
-     * @param fecha
-     * @return 
+     * Crea una venta utilizando los productos del carrito y un cliente existente.
+     * También actualiza el stock de los productos vendidos.
+     *
+     * @param documentoCliente Número de documento del cliente
+     * @param fecha Fecha de la venta
+     * @return ID de la venta generada
      */
     public int crearVenta(int documentoCliente, LocalDate fecha) {
         if (!repositorioClientes.existeCliente(documentoCliente)) {
@@ -49,115 +59,106 @@ public class ControladorVenta {
 
         Cliente cliente = repositorioClientes.getCliente(documentoCliente);
         
-        // Actualizar stock de productos
+        // Actualizar stock de productos vendidos
         for (Map.Entry<Producto, Integer> entry : carritoProductos.entrySet()) {
             Producto producto = entry.getKey();
             int cantidad = entry.getValue();
             
-            // Actualizar la cantidad en el repositorio de productos
             if (!repositorioProductos.actualizarStock(producto.getNombre(), producto.getCantidad() - cantidad)) {
                 throw new IllegalArgumentException("No se pudo actualizar el stock del producto: " + producto.getNombre());
             }
         }
         
         int idVenta = repositorioVentas.crearVenta(cliente, new HashMap<>(carritoProductos), fecha);
-        limpiarCarrito();
+        limpiarCarrito(); // Vacía el carrito luego de completar la venta
         return idVenta;
     }
-    
+
     /**
-     * 
-     * @param nombreProducto
-     * @param cantidad
-     * @return 
+     * Agrega un producto al carrito, validando existencia y stock.
+     *
+     * @param nombreProducto Nombre del producto
+     * @param cantidad Cantidad deseada
+     * @return true si se agregó correctamente
      */
     public boolean agregarProductoAlCarrito(String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
-        
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
         }
-
-        // Verificar si el producto existe
         if (!repositorioProductos.existeProducto(nombreProducto)) {
             throw new IllegalArgumentException("El producto no existe.");
         }
 
-        // Obtener el producto del repositorio de productos
         Producto producto = repositorioProductos.getProducto(nombreProducto);
 
-        // Verificar que hay suficiente stock
         if (producto.getCantidad() < cantidad) {
             throw new IllegalArgumentException("No hay suficiente stock del producto.");
         }
 
-        // Agregar o actualizar la cantidad en el carrito
-        if (carritoProductos.containsKey(producto)) {
-            int cantidadActual = carritoProductos.get(producto);
-            carritoProductos.put(producto, cantidadActual + cantidad);
-        } else {
-            carritoProductos.put(producto, cantidad);
-        }
-
+        // Suma o inicializa la cantidad del producto en el carrito
+        carritoProductos.merge(producto, cantidad, Integer::sum);
         return true;
     }
-    
+
     /**
-     * 
-     * @param nombreProducto
-     * @return 
+     * Elimina un producto del carrito.
+     *
+     * @param nombreProducto Nombre del producto a quitar
+     * @return true si fue eliminado correctamente
      */
     public boolean quitarProductoDelCarrito(String nombreProducto) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
-        
+
         Producto producto = obtenerProducto(nombreProducto);
         if (producto == null || !carritoProductos.containsKey(producto)) {
             throw new IllegalArgumentException("El producto no está en el carrito.");
         }
-        
+
         carritoProductos.remove(producto);
         return true;
     }
-    
+
     /**
-     * 
-     * @param nombreProducto
-     * @param cantidad
-     * @return 
+     * Disminuye la cantidad de un producto en el carrito.
+     * Si la cantidad queda en 0, se elimina del carrito.
+     *
+     * @param nombreProducto Nombre del producto
+     * @param cantidad Cantidad a disminuir
+     * @return true si se realizó el cambio
      */
     public boolean disminuirCantidadEnCarrito(String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
-        
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
         }
-        
+
         Producto producto = obtenerProducto(nombreProducto);
         if (producto == null || !carritoProductos.containsKey(producto)) {
             throw new IllegalArgumentException("El producto no está en el carrito.");
         }
-        
+
         int cantidadActual = carritoProductos.get(producto);
         if (cantidadActual <= cantidad) {
-            // Si la cantidad a disminuir es mayor o igual a la actual, se elimina el producto
             carritoProductos.remove(producto);
         } else {
             carritoProductos.put(producto, cantidadActual - cantidad);
         }
-        
+
         return true;
     }
 
     /**
-     * 
-     * @param nombreProducto
-     * @return 
+     * Obtiene un producto del repositorio por su nombre.
+     *
+     * @param nombreProducto Nombre del producto
+     * @return Objeto Producto si existe, null si no
      */
     public Producto obtenerProducto(String nombreProducto) {
         if (!repositorioProductos.existeProducto(nombreProducto)) {
@@ -167,27 +168,28 @@ public class ControladorVenta {
     }
 
     /**
-     * 
-     * @return 
+     * Devuelve una copia del carrito de productos actual.
+     *
+     * @return Mapa con productos y cantidades en el carrito
      */
     public HashMap<Producto, Integer> getCarritoProductos() {
-        return new HashMap<>(carritoProductos); // Devuelve una copia para evitar modificaciones externas
+        return new HashMap<>(carritoProductos);
     }
 
     /**
-     * 
+     * Limpia completamente el carrito de compras.
      */
     public void limpiarCarrito() {
         carritoProductos.clear();
     }
 
-    
     /**
-     * 
-     * @param idVenta
-     * @param nombreProducto
-     * @param cantidad
-     * @return 
+     * Agrega un producto a una venta ya realizada.
+     *
+     * @param idVenta ID de la venta
+     * @param nombreProducto Nombre del producto
+     * @param cantidad Cantidad a agregar
+     * @return true si fue agregado correctamente
      */
     public boolean agregarProductoAVenta(int idVenta, String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
@@ -196,157 +198,151 @@ public class ControladorVenta {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
         }
-        
+
         Producto producto = obtenerProducto(nombreProducto);
         if (producto == null) {
             throw new IllegalArgumentException("El producto no existe.");
         }
-        
-        // Verificar que hay suficiente stock
+
         if (producto.getCantidad() < cantidad) {
             throw new IllegalArgumentException("No hay suficiente stock del producto.");
         }
-        
-        // Actualizar el stock del producto
+
         if (!repositorioProductos.actualizarStock(nombreProducto, producto.getCantidad() - cantidad)) {
             throw new IllegalArgumentException("No se pudo actualizar el stock del producto.");
         }
-        
+
         return repositorioVentas.agregarProducto(idVenta, producto, cantidad);
     }
 
     /**
-     * 
-     * @param idVenta
-     * @param nombreProducto
-     * @return 
+     * Elimina un producto de una venta existente y restaura el stock.
+     *
+     * @param idVenta ID de la venta
+     * @param nombreProducto Nombre del producto
+     * @return true si fue eliminado correctamente
      */
     public boolean eliminarProductoDeVenta(int idVenta, String nombreProducto) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
-        
+
         Producto producto = obtenerProducto(nombreProducto);
         if (producto == null) {
             throw new IllegalArgumentException("El producto no existe.");
         }
-        
-        // Obtener la venta y verificar si el producto está en ella
+
         Venta venta = repositorioVentas.obtenerVentaPorId(idVenta);
         if (venta == null) {
             throw new IllegalArgumentException("La venta no existe.");
         }
-        
+
         HashMap<Producto, Integer> listaCompras = venta.getListaCompras();
         if (!listaCompras.containsKey(producto)) {
             throw new IllegalArgumentException("El producto no está en esta venta.");
         }
-        
-        // Obtener la cantidad que se va a restaurar al stock
+
         int cantidadRestaurar = listaCompras.get(producto);
-        
-        // Eliminar el producto de la venta
         boolean eliminado = repositorioVentas.eliminarProducto(idVenta, producto);
-        
+
         if (eliminado) {
-            // Restaurar el stock
             repositorioProductos.actualizarStock(nombreProducto, producto.getCantidad() + cantidadRestaurar);
         }
-        
+
         return eliminado;
     }
-    
+
     /**
-     * 
-     * @param idVenta
-     * @param nombreProducto
-     * @param cantidad
-     * @return 
+     * Disminuye la cantidad de un producto en una venta existente.
+     *
+     * @param idVenta ID de la venta
+     * @param nombreProducto Nombre del producto
+     * @param cantidad Cantidad a disminuir
+     * @return true si fue disminuido correctamente
      */
     public boolean disminuirCantidadProductoEnVenta(int idVenta, String nombreProducto, int cantidad) {
         if (nombreProducto == null || nombreProducto.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío.");
         }
-        
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
         }
-        
+
         Producto producto = obtenerProducto(nombreProducto);
         if (producto == null) {
             throw new IllegalArgumentException("El producto no existe.");
         }
-        
-        // Obtener la venta y verificar si el producto está en ella
+
         Venta venta = repositorioVentas.obtenerVentaPorId(idVenta);
         if (venta == null) {
             throw new IllegalArgumentException("La venta no existe.");
         }
-        
+
         HashMap<Producto, Integer> listaCompras = venta.getListaCompras();
         if (!listaCompras.containsKey(producto)) {
             throw new IllegalArgumentException("El producto no está en esta venta.");
         }
-        
+
         int cantidadActual = listaCompras.get(producto);
         if (cantidad > cantidadActual) {
             throw new IllegalArgumentException("La cantidad a disminuir no puede ser mayor que la cantidad en la venta.");
         }
-        
+
         boolean actualizado = repositorioVentas.disminuirCantidadProducto(idVenta, producto, cantidad);
-        
+
         if (actualizado) {
-            // Restaurar la cantidad al stock
-            repositorioProductos.actualizarStock(nombreProducto, producto.getCantidad() + cantidad);
+            repositorioProductos.actualizarStock(nombreProducto, producto.getCantidad() - cantidad);
         }
-        
+
         return actualizado;
     }
 
     /**
-     * 
-     * @param idVenta
-     * @return 
+     * Elimina una venta y restaura el stock de todos los productos involucrados.
+     *
+     * @param idVenta ID de la venta
+     * @return true si fue eliminada correctamente
      */
     public boolean eliminarVenta(int idVenta) {
-        // Obtener la venta antes de eliminarla para restaurar el stock
         Venta venta = repositorioVentas.obtenerVentaPorId(idVenta);
         if (venta == null) {
             return false;
         }
-        
-        // Restaurar el stock de todos los productos
+
         for (Map.Entry<Producto, Integer> entry : venta.getListaCompras().entrySet()) {
             Producto producto = entry.getKey();
             int cantidad = entry.getValue();
             repositorioProductos.actualizarStock(producto.getNombre(), producto.getCantidad() + cantidad);
         }
-        
+
         return repositorioVentas.eliminarVenta(idVenta);
     }
 
     /**
-     * 
-     * @param idVenta
-     * @return 
+     * Obtiene una venta según su ID.
+     *
+     * @param idVenta ID de la venta
+     * @return Objeto Venta si existe
      */
     public Venta obtenerVentaPorId(int idVenta) {
         return repositorioVentas.obtenerVentaPorId(idVenta);
     }
-    
+
     /**
-     * 
-     * @return 
+     * Devuelve una lista con todas las ventas registradas.
+     *
+     * @return Lista de ventas
      */
     public List<Venta> listarVentas() {
         return repositorioVentas.listarVentas();
     }
-    
+
     /**
-     * 
-     * @param desde
-     * @param hasta
-     * @return 
+     * Genera un informe de productos vendidos entre dos fechas.
+     *
+     * @param desde Fecha inicial
+     * @param hasta Fecha final
+     * @return Mapa de productos vendidos con su cantidad
      */
     public Map<Producto, Integer> generarInformeProductosVendidos(LocalDate desde, LocalDate hasta) {
         return repositorioVentas.generarInformeProductosVendidos(desde, hasta);

@@ -3,24 +3,42 @@ package com.ventas.modelo;
 import java.time.LocalDate;
 import java.util.HashMap;
 
+/**
+ * Clase que representa una Venta realizada por un cliente.
+ * Contiene un identificador único, el cliente asociado, los productos comprados,
+ * la fecha de la venta y el total calculado.
+ * 
+ * Cada producto comprado se guarda con la cantidad correspondiente
+ * en un HashMap<Producto, Integer>.
+ * 
+ * @author Jona
+ */
 public class Venta {
 
-    private int idVenta;
-    private Cliente cliente;
-    private HashMap<Producto, Integer> listaCompras;
-    private LocalDate fecha;
-    private double total;
+    private int idVenta; // ID único de la venta
+    private Cliente cliente; // Cliente que realizó la compra
+    private HashMap<Producto, Integer> listaCompras; // Productos comprados y su cantidad
+    private LocalDate fecha; // Fecha en que se realizó la venta
+    private double total; // Total en dinero de la venta
 
+    /**
+     * Constructor de la clase Venta.
+     *
+     * @param idVenta ID único de la venta
+     * @param cliente Cliente que realiza la compra
+     * @param listaCompras Mapa de productos con la cantidad comprada
+     * @param fecha Fecha de la venta
+     */
     public Venta(int idVenta, Cliente cliente, HashMap<Producto, Integer> listaCompras, LocalDate fecha) {
         this.idVenta = idVenta;
         this.cliente = cliente;
         this.listaCompras = listaCompras;
         this.fecha = fecha;
-        calcularTotal();
+        calcularTotal(); // Calcula el total automáticamente al crear la venta
     }
 
     /**
-     * 
+     * Calcula el total de la venta multiplicando el precio de cada producto por su cantidad.
      */
     public void calcularTotal() {
         this.total = listaCompras.entrySet().stream()
@@ -29,6 +47,7 @@ public class Venta {
     }
 
     // Getters y Setters
+
     public int getIdVenta() {
         return idVenta;
     }

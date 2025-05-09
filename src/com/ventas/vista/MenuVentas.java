@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Menu para la gestion de ventas
- *
+ * Clase encargada de gestionar el menú de ventas.
+ * Permite crear, listar, ver detalles, eliminar ventas y generar informes de productos vendidos.
+ * Forma parte de la capa de presentación (Vista) del patrón MVC.
+ * 
  * @author Jona Vicesar
  */
 public class MenuVentas {
@@ -21,7 +23,7 @@ public class MenuVentas {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
-     * Muestra el menu de ventas y maneja la selecciin de opciones
+     * Muestra el menú principal de ventas y solicita al usuario que seleccione una opción.
      */
     public void mostrar() {
         System.out.println("MENU VENTAS ");
@@ -34,9 +36,11 @@ public class MenuVentas {
         System.out.print("Seleccione una opcion: ");
         
         seleccionarOpcion();
-
     }
 
+    /**
+     * Recibe la opción del usuario y ejecuta la acción correspondiente.
+     */
     public void seleccionarOpcion() {
         String opcion = entrada.nextLine();
 
@@ -73,14 +77,13 @@ public class MenuVentas {
     }
 
     /**
-     * Crea una nueva venta
+     * Permite al usuario crear una nueva venta, ingresando cliente y productos.
+     * Se muestra un resumen y se solicita confirmación antes de guardar.
      */
     private void crearNuevaVenta() {
         try {
             System.out.println("\nCREAR NUEVA VENTA");
-
-            // Limpiar el carrito por si acaso
-            controladorVentas.limpiarCarrito();
+            controladorVentas.limpiarCarrito(); // Asegurar que el carrito esté limpio
 
             System.out.print("Ingrese el documento del cliente: ");
             int documento = Integer.parseInt(entrada.nextLine());
@@ -129,7 +132,7 @@ public class MenuVentas {
     }
 
     /**
-     * Muestra el contenido del carrito
+     * Muestra por consola los productos actualmente en el carrito junto con su precio total.
      */
     private void mostrarCarrito() {
         System.out.println("\nCARRITO DE COMPRAS");
@@ -162,7 +165,7 @@ public class MenuVentas {
     }
 
     /**
-     * Lista todas las ventas
+     * Lista todas las ventas registradas, mostrando sus datos básicos en formato de tabla.
      */
     private void listarVentas() {
         System.out.println("\n==== LISTA DE VENTAS ====");
@@ -185,7 +188,7 @@ public class MenuVentas {
     }
 
     /**
-     * Muestra los detalles de una venta específica
+     * Solicita al usuario un ID de venta y muestra sus detalles si existe.
      */
     private void verDetalleVenta() {
         System.out.println("\nDETALLE DE VENTA");
@@ -206,7 +209,7 @@ public class MenuVentas {
     }
 
     /**
-     * Elimina una venta
+     * Elimina una venta seleccionada por su ID, solicitando confirmación antes de hacerlo.
      */
     private void eliminarVenta() {
         System.out.println("\nELIMINAR VENTA");
@@ -240,7 +243,7 @@ public class MenuVentas {
     }
 
     /**
-     * Genera un informe de productos vendidos entre dos fechas
+     * Solicita un rango de fechas y muestra un informe con los productos vendidos y sus totales.
      */
     private void hacerInformeProductosVendidos() {
         System.out.println("\nINFORME DE PRODUCTOS VENDIDOS");
@@ -252,7 +255,7 @@ public class MenuVentas {
             System.out.print("Ingrese la fecha hasta (DD/MM/AAAA): ");
             LocalDate fechaHasta = LocalDate.parse(entrada.nextLine(), dateFormatter);
 
-             if (fechaHasta.isBefore(fechaDesde)) {
+            if (fechaHasta.isBefore(fechaDesde)) {
                 System.out.println("Error: La fecha hasta no puede ser anterior a la fecha desde.");
                 return;
             }
@@ -294,9 +297,9 @@ public class MenuVentas {
     }
 
     /**
-     * Imprime un ticket de venta
+     * Imprime en consola un ticket detallado de la venta proporcionada.
      *
-     * @param venta Venta a imprimir
+     * @param venta Objeto Venta del cual se desea mostrar el ticket
      */
     private void imprimirTicket(Venta venta) {
         System.out.println("\n============ TICKET DE VENTA ============");

@@ -10,15 +10,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Repositorio encargado de gestionar las ventas realizadas.
+ * Almacena las ventas en memoria y proporciona métodos para crear, editar, eliminar y consultar ventas.
+ * Forma parte del patrón MVC en la capa de persistencia simulada.
+ */
 public class RepositorioVentas {
+
+    // Mapa que almacena las ventas con su ID como clave
     private static final HashMap<Integer, Venta> repositorio = new HashMap<>();
+    
+    // ID autoincremental para cada nueva venta
     private static int idVenta = 1;
+
     /**
-     * 
-     * @param cliente
-     * @param listaCompras
-     * @param fecha
-     * @return 
+     * Crea una nueva venta con un cliente, una lista de compras y una fecha determinada.
+     *
+     * @param cliente Cliente que realiza la compra
+     * @param listaCompras Lista de productos con sus cantidades
+     * @param fecha Fecha de la venta
+     * @return ID asignado a la nueva venta
      */
     public int crearVenta(Cliente cliente, HashMap<Producto, Integer> listaCompras, LocalDate fecha) {
         Venta nuevaVenta = new Venta(idVenta, cliente, listaCompras, fecha);
@@ -26,13 +37,13 @@ public class RepositorioVentas {
         return idVenta++;
     }
 
-    
     /**
-     * 
-     * @param idVenta
-     * @param producto
-     * @param cantidad
-     * @return 
+     * Agrega un producto a una venta existente, sumando la cantidad si ya estaba presente.
+     *
+     * @param idVenta ID de la venta
+     * @param producto Producto a agregar
+     * @param cantidad Cantidad a agregar (> 0)
+     * @return true si se agregó correctamente
      */
     public boolean agregarProducto(int idVenta, Producto producto, int cantidad) {
         Venta venta = repositorio.get(idVenta);
@@ -40,16 +51,18 @@ public class RepositorioVentas {
 
         HashMap<Producto, Integer> listaCompras = venta.getListaCompras();
         listaCompras.put(producto, listaCompras.getOrDefault(producto, 0) + cantidad);
-        venta.calcularTotal(); // Actualizar total
+        venta.calcularTotal(); // Actualiza el total tras modificar la compra
         return true;
     }
 
     /**
-     * 
-     * @param idVenta
-     * @param producto
-     * @param cantidad
-     * @return 
+     * Disminuye la cantidad de un producto en una venta.
+     * Si la cantidad queda en cero o menos, el producto se elimina de la venta.
+     *
+     * @param idVenta ID de la venta
+     * @param producto Producto a modificar
+     * @param cantidad Cantidad a disminuir (> 0)
+     * @return true si se modificó correctamente
      */
     public boolean disminuirCantidadProducto(int idVenta, Producto producto, int cantidad) {
         Venta venta = repositorio.get(idVenta);
@@ -60,20 +73,20 @@ public class RepositorioVentas {
 
         int cantidadActual = listaCompras.get(producto);
         if (cantidadActual <= cantidad) {
-            // Si la cantidad a disminuir es mayor o igual a la actual, se elimina el producto
             listaCompras.remove(producto);
         } else {
             listaCompras.put(producto, cantidadActual - cantidad);
         }
-        venta.calcularTotal();
+        venta.calcularTotal(); // Recalcula el total tras el cambio
         return true;
     }
 
     /**
-     * 
-     * @param idVenta
-     * @param producto
-     * @return 
+     * Elimina un producto de una venta.
+     *
+     * @param idVenta ID de la venta
+     * @param producto Producto a eliminar
+     * @return true si fue eliminado correctamente
      */
     public boolean eliminarProducto(int idVenta, Producto producto) {
         Venta venta = repositorio.get(idVenta);
@@ -88,19 +101,21 @@ public class RepositorioVentas {
     }
 
     /**
-     * 
-     * @param idVenta
-     * @return 
+     * Elimina una venta del repositorio.
+     *
+     * @param idVenta ID de la venta a eliminar
+     * @return true si fue eliminada correctamente
      */
     public boolean eliminarVenta(int idVenta) {
         return repositorio.remove(idVenta) != null;
     }
-    
+
     /**
-     * 
-     * @param desde
-     * @param hasta
-     * @return 
+     * Devuelve una lista de las ventas realizadas entre dos fechas (inclusive).
+     *
+     * @param desde Fecha de inicio
+     * @param hasta Fecha de fin
+     * @return Lista de ventas dentro del rango de fechas
      */
     public List<Venta> obtenerVentasEntreFechas(LocalDate desde, LocalDate hasta) {
         return repositorio.values().stream()
@@ -109,28 +124,30 @@ public class RepositorioVentas {
     }
 
     /**
-     * 
-     * @param idVenta
-     * @return 
+     * Obtiene una venta específica según su ID.
+     *
+     * @param idVenta ID de la venta
+     * @return Objeto Venta si existe, null en caso contrario
      */
     public Venta obtenerVentaPorId(int idVenta) {
         return repositorio.get(idVenta);
     }
-    
+
     /**
-     * 
-     * @return 
+     * Devuelve una lista con todas las ventas registradas.
+     *
+     * @return Lista de ventas
      */
     public List<Venta> listarVentas() {
         return new ArrayList<>(repositorio.values());
-       
     }
-    
+
     /**
-     * 
-     * @param desde
-     * @param hasta
-     * @return 
+     * Genera un informe de productos vendidos y sus cantidades entre dos fechas.
+     *
+     * @param desde Fecha de inicio
+     * @param hasta Fecha de fin
+     * @return Mapa con productos como clave y cantidad total vendida como valor
      */
     public Map<Producto, Integer> generarInformeProductosVendidos(LocalDate desde, LocalDate hasta) {
         Map<Producto, Integer> productosVendidos = new HashMap<>();

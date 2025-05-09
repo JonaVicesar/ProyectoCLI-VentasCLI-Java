@@ -1,24 +1,47 @@
 package com.ventas.modelo;
+
 /**
- *
+ * Clase que representa un producto en el sistema de ventas.
+ * Cada producto tiene un nombre, un código único (id), un precio y una cantidad (stock).
+ * 
  * @author Jona Vicesar
  */
 public class Producto {
+    
+    // Nombre del producto (ej. "Coca-Cola")
     private String nombre;
-    private int id;  //como el codigo del codigo de barras
+
+    // Código único del producto (puede representar un código de barras)
+    private int id;
+
+    // Precio por unidad
     private double precio;
-    private int cantidad; //stock
-    
-    public Producto(){
-        
+
+    // Cantidad disponible en stock
+    private int cantidad;
+
+    /**
+     * Constructor por defecto (producto vacío)
+     */
+    public Producto() {
     }
-    
-    public Producto(String nombre,int id, double precio, int cantidad){
+
+    /**
+     * Constructor con todos los atributos
+     * 
+     * @param nombre Nombre del producto
+     * @param id Código único (como un código de barras)
+     * @param precio Precio unitario
+     * @param cantidad Cantidad disponible en stock
+     */
+    public Producto(String nombre, int id, double precio, int cantidad) {
         this.nombre = nombre;
         this.id = id;
         this.precio = precio;
         this.cantidad = cantidad;
     }
+
+    // Getters y setters
 
     public String getNombre() {
         return nombre;
