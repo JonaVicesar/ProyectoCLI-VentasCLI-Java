@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Clase encargada de manejar la lógica de negocio y validación relacionada con
- * clientes. Aquí se centraliza el control de flujo antes de interactuar con el
- * repositorio.
+ * Clase encargada de manejar la logica y validacion relacionada con
+ * clientes
  *
  * @author Jona Vicesar
  */
@@ -25,12 +24,12 @@ public class ControladorCliente {
     }
 
     /**
-     * Agrega un nuevo cliente (sin tarjeta) después de validar los datos.
+     * Agrega un nuevo cliente (sin tarjeta) después de validar los datos
      *
      * @param nombre Nombre del cliente
      * @param edad Edad del cliente
      * @param documento Documento único del cliente
-     * @param telefono Teléfono del cliente
+     * @param telefono Telefono del cliente
      * @param metodo Método de pago
      * @return true si se agrega correctamente
      */
@@ -52,12 +51,12 @@ public class ControladorCliente {
     }
 
     /**
-     * Agrega un nuevo cliente (con tarjeta) después de validar los datos.
+     * Agrega un nuevo cliente (con tarjeta) después de validar los datos
      *
      * @param nombre Nombre del cliente
      * @param edad Edad
      * @param documento Documento
-     * @param telefono Teléfono
+     * @param telefono Telefono
      * @param metodo Método de pago
      * @param tarjeta Número de tarjeta
      * @return true si se agrega correctamente
@@ -102,7 +101,7 @@ public class ControladorCliente {
     }
 
     /**
-     * Edita el nombre de un cliente existente.
+     * Edita el nombre de un cliente existente
      *
      * @param nuevoNombre Nuevo nombre
      * @param documento Documento del cliente
@@ -120,15 +119,14 @@ public class ControladorCliente {
     }
 
     /**
-     * Edita el número de teléfono de un cliente.
+     * Edita el número de teléfono de un cliente
      *
      * @param nuevoTelefono Nuevo número
      * @param documento Documento del cliente
      * @return true si se edita correctamente
      */
     public boolean editarTelefono(String nuevoTelefono, int documento) {
-        // Validación usando regex para asegurar que el teléfono tenga formato válido
-        String regex = "^(09\\d{8})$";
+        String regex = "^(09\\d{8})$";//validacion para numeros de telefono
         if (!nuevoTelefono.matches(regex)) {
             throw new IllegalArgumentException("El número de teléfono es incorrecto");
         }
@@ -140,7 +138,7 @@ public class ControladorCliente {
     }
 
     /**
-     * Devuelve la lista completa de clientes registrados.
+     * Devuelve la lista completa de clientes registrados
      *
      * @return Lista de objetos Cliente
      */

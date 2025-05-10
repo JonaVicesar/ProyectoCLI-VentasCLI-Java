@@ -6,32 +6,27 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Clase que actúa como repositorio de productos.
- * Administra un conjunto de productos utilizando un HashMap,
- * con el nombre del producto como clave (en minúsculas).
- * También se encarga de asignar IDs automáticamente.
+ * Clase que actúa como repositorio de productos
  * 
  * @author Jona Vicesar
  */
 public class RepositorioProductos {
 
-    // HashMap que almacena los productos, usando el nombre como clave (case-insensitive)
+    
     public static final HashMap<String, Producto> repositorio = new HashMap<>();
 
-    // Contador interno para generar IDs únicos
     private int contadorId = 1;
 
     public RepositorioProductos() {
     }
 
     /**
-     * Agrega un nuevo producto al repositorio.
-     * El ID es asignado automáticamente.
-     * 
+     * Agrega un nuevo producto al repositorio
+     * El ID es asignado automáticamente
      * @param nombre Nombre del producto
      * @param precio Precio unitario
      * @param cantidad Stock disponible
-     * @return true si se agregó correctamente
+     * @return true si se agrego correctamente
      */
     public boolean agregarProducto(String nombre, double precio, int cantidad) {
         Producto producto = new Producto(nombre, contadorId, precio, cantidad);
@@ -41,7 +36,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Elimina un producto del repositorio por su nombre.
+     * Elimina un producto del repositorio por su nombre
      * 
      * @param nombre Nombre del producto a eliminar
      * @return true si fue eliminado exitosamente
@@ -52,7 +47,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Cambia el nombre de un producto existente.
+     * Cambia el nombre de un producto existente
      * 
      * @param nombreProducto Nombre actual
      * @param nuevoNombre Nuevo nombre
@@ -66,7 +61,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Cambia el precio de un producto existente.
+     * Cambia el precio de un producto existente
      * 
      * @param nombreProducto Nombre del producto
      * @param nuevoPrecio Nuevo precio
@@ -80,7 +75,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Cambia el stock de un producto existente.
+     * Cambia el stock de un producto existente
      * 
      * @param nombreProducto Nombre del producto
      * @param nuevoStock Nuevo valor de stock
@@ -94,7 +89,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Verifica si existe un producto con el nombre dado.
+     * Verifica si existe un producto con el nombre dado
      * 
      * @param nombre Nombre del producto
      * @return true si existe
@@ -114,8 +109,8 @@ public class RepositorioProductos {
     }
 
     /**
-     * Actualiza el stock de un producto existente.
-     * Rechaza valores negativos y productos inexistentes.
+     * Actualiza el stock de un producto existente
+     * Rechaza valores negativos y productos inexistentes
      * 
      * @param nombreProducto Nombre del producto
      * @param nuevoStock Nuevo valor de stock
@@ -132,7 +127,7 @@ public class RepositorioProductos {
     }
 
     /**
-     * Devuelve una lista con todos los productos registrados.
+     * Devuelve una lista con todos los productos registrados
      * 
      * @return Lista de objetos Producto
      */

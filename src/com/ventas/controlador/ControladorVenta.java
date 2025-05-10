@@ -13,27 +13,23 @@ import java.util.Map;
 
 /**
  * Controlador encargado de manejar la lógica de ventas, incluyendo el uso de un carrito,
- * validaciones, actualizaciones de stock y operaciones relacionadas a las ventas.
- * Forma parte del patrón MVC.
+ * validaciones, actualizaciones de stock y operaciones relacionadas a las ventas
+ * 
  * 
  * @author Jona Vicesar
  */
 public class ControladorVenta {
 
-    // Carrito compartido donde se agregan productos antes de confirmar la venta
+    // Carrito donde se agregan productos antes de confirmar la venta
     private static final HashMap<Producto, Integer> carritoProductos = new HashMap<>();
     
-    // Repositorios para acceder a los datos de ventas, productos y clientes
     private final RepositorioVentas repositorioVentas;
     private final RepositorioProductos repositorioProductos;
     private final RepositorioCliente repositorioClientes;
 
-    // Fecha actual (puede modificarse para pruebas o ventas manuales)
+
     public LocalDate fecha = LocalDate.now();
 
-    /**
-     * Constructor que inicializa los repositorios.
-     */
     public ControladorVenta() {
         this.repositorioVentas = new RepositorioVentas();
         this.repositorioClientes = new RepositorioCliente();
@@ -41,8 +37,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Crea una venta utilizando los productos del carrito y un cliente existente.
-     * También actualiza el stock de los productos vendidos.
+     * Crea una venta utilizando los productos del carrito y un cliente existente
      *
      * @param documentoCliente Número de documento del cliente
      * @param fecha Fecha de la venta
@@ -59,7 +54,7 @@ public class ControladorVenta {
 
         Cliente cliente = repositorioClientes.getCliente(documentoCliente);
         
-        // Actualizar stock de productos vendidos
+        
         for (Map.Entry<Producto, Integer> entry : carritoProductos.entrySet()) {
             Producto producto = entry.getKey();
             int cantidad = entry.getValue();
@@ -70,12 +65,12 @@ public class ControladorVenta {
         }
         
         int idVenta = repositorioVentas.crearVenta(cliente, new HashMap<>(carritoProductos), fecha);
-        limpiarCarrito(); // Vacía el carrito luego de completar la venta
+        limpiarCarrito(); // vacia el carrito luego de completar la venta
         return idVenta;
     }
 
     /**
-     * Agrega un producto al carrito, validando existencia y stock.
+     * Agrega un producto al carrito, validando existencia y stock
      *
      * @param nombreProducto Nombre del producto
      * @param cantidad Cantidad deseada
@@ -104,7 +99,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Elimina un producto del carrito.
+     * Elimina un producto del carrito
      *
      * @param nombreProducto Nombre del producto a quitar
      * @return true si fue eliminado correctamente
@@ -124,8 +119,8 @@ public class ControladorVenta {
     }
 
     /**
-     * Disminuye la cantidad de un producto en el carrito.
-     * Si la cantidad queda en 0, se elimina del carrito.
+     * Disminuye la cantidad de un producto en el carrito
+     * Si la cantidad queda en 0, se elimina del carrito
      *
      * @param nombreProducto Nombre del producto
      * @param cantidad Cantidad a disminuir
@@ -155,7 +150,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Obtiene un producto del repositorio por su nombre.
+     * Obtiene un producto del repositorio por su nombre
      *
      * @param nombreProducto Nombre del producto
      * @return Objeto Producto si existe, null si no
@@ -168,7 +163,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Devuelve una copia del carrito de productos actual.
+     * Devuelve una copia del carrito de productos actual
      *
      * @return Mapa con productos y cantidades en el carrito
      */
@@ -184,7 +179,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Agrega un producto a una venta ya realizada.
+     * Agrega un producto a una venta ya realizada
      *
      * @param idVenta ID de la venta
      * @param nombreProducto Nombre del producto
@@ -216,7 +211,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Elimina un producto de una venta existente y restaura el stock.
+     * Elimina un producto de una venta existente y  vuelve a aumentar el stock
      *
      * @param idVenta ID de la venta
      * @param nombreProducto Nombre del producto
@@ -253,7 +248,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Disminuye la cantidad de un producto en una venta existente.
+     * Disminuye la cantidad de un producto en una venta existente
      *
      * @param idVenta ID de la venta
      * @param nombreProducto Nombre del producto
@@ -298,7 +293,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Elimina una venta y restaura el stock de todos los productos involucrados.
+     * 
      *
      * @param idVenta ID de la venta
      * @return true si fue eliminada correctamente
@@ -319,7 +314,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Obtiene una venta según su ID.
+     * Obtiene una venta segun su ID
      *
      * @param idVenta ID de la venta
      * @return Objeto Venta si existe
@@ -338,7 +333,7 @@ public class ControladorVenta {
     }
 
     /**
-     * Genera un informe de productos vendidos entre dos fechas.
+     * Genera un informe de productos vendidos entre dos fechas
      *
      * @param desde Fecha inicial
      * @param hasta Fecha final

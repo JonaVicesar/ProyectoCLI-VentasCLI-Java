@@ -6,9 +6,8 @@ import com.ventas.modelo.Producto;
 import java.util.List;
 
 /**
- * Clase que representa la interfaz de usuario para la gestión de productos.
- * Permite crear, editar, eliminar y listar productos mediante la consola.
- * Se comunica con el controlador de productos.
+ * Clase que representa la interfaz de usuario para la gestión de productos
+ * Permite crear, editar, eliminar y listar productos mediante la consola
  * 
  * @author Jona Vicesar
  */
@@ -16,14 +15,13 @@ public class MenuProductos {
 
     public Scanner entrada = new Scanner(System.in);
 
-    // Controlador que maneja la lógica de negocio para productos
     public ControladorProducto producto = new ControladorProducto();
 
     public MenuProductos() {
     }
 
     /**
-     * Muestra el menú principal para productos.
+     * Muestra el menu principal para productos.
      */
     public void mostrar() {
         System.out.println("#MENU PRODUCTOS");
@@ -38,7 +36,7 @@ public class MenuProductos {
     }
 
     /**
-     * Maneja la opción seleccionada en el menú principal.
+     * Maneja la opcion seleccionada en el menu principal
      */
     private void seleccionarOpcion() {
         String opcion = entrada.next();
@@ -68,7 +66,7 @@ public class MenuProductos {
                 break;
 
             case "2":
-                // Ir al submenú de edición
+                // Ir al msnu de edición
                 this.menuEditarProducto();
                 break;
 
@@ -95,7 +93,7 @@ public class MenuProductos {
                 break;
 
             case "5":
-                // Volver al menú principal
+                // Volver al menuprincipal
                 MenuPrincipal menu = new MenuPrincipal();
                 menu.mostrar();
                 break;
@@ -108,7 +106,7 @@ public class MenuProductos {
     }
 
     /**
-     * Muestra el submenú de edición de productos.
+     * Muestra el menu de edicion de productos
      */
     public void menuEditarProducto() {
         System.out.println("#EDITAR PRODUCTO");
@@ -122,7 +120,7 @@ public class MenuProductos {
     }
 
     /**
-     * Maneja la opción seleccionada en el menú de edición.
+     * Maneja la opcion seleccionada en el menu de edicion
      */
     private void seleccionarMenuEditar() {
         String opcion = entrada.next();
@@ -202,7 +200,7 @@ public class MenuProductos {
     }
 
     /**
-     * Lista todos los productos disponibles en el sistema, con formato tabular.
+     * Lista todos los productos disponibles en el sistema, con formato tabular
      */
     public void listarProductos() {
         List<Producto> listaProducto = producto.listaProductos();

@@ -17,7 +17,7 @@ public class Cliente {
     private String telefono;
 
     /**
-     * Constructor por defecto. Inicializa el nombre como "No identificado".
+     * Constructor por defecto inicializa el nombre como "No identificado"
      */
     public Cliente() {
         this.nombreCompleto = "No identificado";
@@ -41,14 +41,14 @@ public class Cliente {
     }
 
     /**
-     * Constructor para clientes que pagan con tarjeta.
+     * Constructor para clientes que pagan con tarjeta
      *
      * @param nombreCompleto Nombre completo del cliente
      * @param edad Edad del cliente
      * @param documento Número de documento del cliente
-     * @param telefono Teléfono del cliente
+     * @param telefono Telefono del cliente
      * @param metodoPago Método de pago
-     * @param tarjeta Número de tarjeta del cliente (si aplica)
+     * @param tarjeta Numero de tarjeta del cliente
      */
     public Cliente(String nombreCompleto, int edad, int documento, String telefono, String metodoPago, String tarjeta) {
         this.nombreCompleto = nombreCompleto;
@@ -110,15 +110,8 @@ public class Cliente {
     }
 
     /**
-     * Devuelve una representación en texto del cliente.
-     * Útil para impresión o debugging.
+     * Devuelve una representación en texto del cliente
+     * 
      */
-    @Override
-    public String toString() {
-        return "Cliente" + "\n nombre = " + nombreCompleto
-                + "\n edad = " + edad
-                + "\n documento = " + documento
-                + "\n telefono = " + telefono;
-    }
 
 }

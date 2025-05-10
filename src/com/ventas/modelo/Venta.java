@@ -4,25 +4,22 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 /**
- * Clase que representa una Venta realizada por un cliente.
+ * Clase que representa una Venta realizada por un cliente
  * Contiene un identificador único, el cliente asociado, los productos comprados,
- * la fecha de la venta y el total calculado.
- * 
- * Cada producto comprado se guarda con la cantidad correspondiente
- * en un HashMap<Producto, Integer>.
+ * la fecha de la venta y el total calculado
  * 
  * @author Jona
  */
 public class Venta {
 
-    private int idVenta; // ID único de la venta
-    private Cliente cliente; // Cliente que realizó la compra
-    private HashMap<Producto, Integer> listaCompras; // Productos comprados y su cantidad
-    private LocalDate fecha; // Fecha en que se realizó la venta
-    private double total; // Total en dinero de la venta
+    private int idVenta; 
+    private Cliente cliente; 
+    private HashMap<Producto, Integer> listaCompras; 
+    private LocalDate fecha; 
+    private double total; 
 
     /**
-     * Constructor de la clase Venta.
+     * Constructor de la clase venta
      *
      * @param idVenta ID único de la venta
      * @param cliente Cliente que realiza la compra
@@ -38,7 +35,7 @@ public class Venta {
     }
 
     /**
-     * Calcula el total de la venta multiplicando el precio de cada producto por su cantidad.
+     * Calcula el total de la venta multiplicando el precio de cada producto por su cantidad
      */
     public void calcularTotal() {
         this.total = listaCompras.entrySet().stream()

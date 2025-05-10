@@ -9,21 +9,18 @@ import java.util.Scanner;
 /**
  * Vista del sistema encargada de mostrar el menú de gestión de clientes
  * e interactuar con el usuario mediante consola.
- * Se conecta con el controlador para realizar operaciones.
- * Forma parte de la capa de presentación (Vista) del patrón MVC.
  * 
  * @author Jona Vicesar
  */
 public class MenuCliente {
 
-    // Scanner para entrada por consola
+   
     public Scanner entrada = new Scanner(System.in);
 
-    // Controlador que maneja la lógica de negocio de los clientes
     public static final ControladorCliente controladorClientes = new ControladorCliente();
 
     /**
-     * Muestra el menú principal para gestionar clientes.
+     * Muestra el menu principal para gestionar clientes
      */
     public void mostrar() {
         System.out.println("####MENU CLIENTES#### ^_^");
@@ -38,7 +35,7 @@ public class MenuCliente {
     }
 
     /**
-     * Maneja la opción ingresada por el usuario en el menú principal.
+     * Maneja la opcion ingresada por el usuario en el menu principal
      */
     private void seleccionarOpcion() {
         String opcion = entrada.next();
@@ -142,7 +139,7 @@ public class MenuCliente {
     }
 
     /**
-     * Muestra el submenú de edición de clientes.
+     * Muestra el menu de edicion de clientes
      */
     public void menuEditar() {
         System.out.println("#MENU EDICION CLIENTES");
@@ -155,7 +152,7 @@ public class MenuCliente {
     }
 
     /**
-     * Maneja la opción de edición seleccionada por el usuario.
+     * Maneja la opcion de edicion seleccionada por el usuario
      */
     private void seleccionarOpcionEditar() {
         String opcion = entrada.next();
@@ -206,7 +203,7 @@ public class MenuCliente {
 
     /**
      * Muestra la lista de clientes registrados en forma de tabla.
-     * Si no hay clientes registrados, informa al usuario.
+     * Si no hay clientes registrados, informa al usuario
      */
     private void listarClientes() {
         List<Cliente> clientes = controladorClientes.listaClientes();

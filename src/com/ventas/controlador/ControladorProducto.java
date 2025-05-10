@@ -5,9 +5,8 @@ import com.ventas.repositorio.RepositorioProductos;
 import java.util.List;
 
 /**
- * Clase que actúa como controlador del módulo de productos.
- * Contiene la lógica de validación antes de delegar las acciones al repositorio.
- * Sigue el patrón MVC.
+ * 
+ * Contiene la logica de validación antes de delegar las acciones al repositorio
  * 
  * @author Jona Vicesar
  */
@@ -23,8 +22,8 @@ public class ControladorProducto {
      * Agrega un nuevo producto al sistema después de validar sus datos.
      *
      * @param nombre Nombre del producto
-     * @param precio Precio unitario (> 0)
-     * @param cantidad Stock inicial (> 0)
+     * @param precio Precio unitario 
+     * @param cantidad Stock inicial 
      * @return true si el producto fue agregado correctamente
      */
     public boolean agregarProducto(String nombre, double precio, int cantidad) {
@@ -40,7 +39,7 @@ public class ControladorProducto {
     }
 
     /**
-     * Elimina un producto del sistema.
+     * Elimina un producto del sistema
      *
      * @param nombreProducto Nombre del producto a eliminar
      * @return true si fue eliminado correctamente
@@ -57,7 +56,7 @@ public class ControladorProducto {
     }
 
     /**
-     * Edita el nombre de un producto existente.
+     * Edita el nombre de un producto existente
      *
      * @param nombreProducto Nombre actual del producto
      * @param nuevoNombre Nuevo nombre deseado
@@ -78,10 +77,10 @@ public class ControladorProducto {
     }
 
     /**
-     * Cambia el precio de un producto existente.
+     * Cambia el precio de un producto existente
      *
      * @param nombreProducto Nombre del producto
-     * @param nuevoPrecio Nuevo precio (> 0)
+     * @param nuevoPrecio Nuevo precio 
      * @return true si fue actualizado correctamente
      */
     public boolean editarPrecio(String nombreProducto, double nuevoPrecio) {
@@ -101,11 +100,11 @@ public class ControladorProducto {
     }
 
     /**
-     * Modifica el stock disponible de un producto.
-     * Si el nuevo stock es cero, se elimina automáticamente el producto.
+     * Modifica el stock de un producto
+     * Si el nuevo stock es cero, se elimina automáticamente el producto
      *
      * @param nombreProducto Nombre del producto
-     * @param nuevoStock Nuevo stock (>= 0)
+     * @param nuevoStock Nuevo stock
      * @return true si se actualiza correctamente
      */
     public boolean editarStock(String nombreProducto, int nuevoStock) {
@@ -130,7 +129,7 @@ public class ControladorProducto {
     }
 
     /**
-     * Devuelve la lista de todos los productos registrados.
+     * Devuelve la lista de todos los productos registrados
      *
      * @return Lista de productos
      */

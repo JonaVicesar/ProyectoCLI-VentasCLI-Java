@@ -11,20 +11,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Repositorio encargado de gestionar las ventas realizadas.
- * Almacena las ventas en memoria y proporciona métodos para crear, editar, eliminar y consultar ventas.
- * Forma parte del patrón MVC en la capa de persistencia simulada.
+ * Repositorio encargado de gestionar las ventas realizadas
+ * Almacena las ventas en la memoria y tiene metodos para crear, editar, eliminar y consultar ventas
  */
 public class RepositorioVentas {
 
     // Mapa que almacena las ventas con su ID como clave
     private static final HashMap<Integer, Venta> repositorio = new HashMap<>();
     
-    // ID autoincremental para cada nueva venta
+    // El ID aumenta para cada venta
     private static int idVenta = 1;
 
     /**
-     * Crea una nueva venta con un cliente, una lista de compras y una fecha determinada.
+     * Crea una nueva venta con un cliente, una lista de compras y una fecha determinada
      *
      * @param cliente Cliente que realiza la compra
      * @param listaCompras Lista de productos con sus cantidades
@@ -38,11 +37,11 @@ public class RepositorioVentas {
     }
 
     /**
-     * Agrega un producto a una venta existente, sumando la cantidad si ya estaba presente.
+     * Agrega un producto a una venta existente, sumando la cantidad si ya estaba presente
      *
      * @param idVenta ID de la venta
      * @param producto Producto a agregar
-     * @param cantidad Cantidad a agregar (> 0)
+     * @param cantidad Cantidad a agregar 
      * @return true si se agregó correctamente
      */
     public boolean agregarProducto(int idVenta, Producto producto, int cantidad) {
@@ -51,7 +50,7 @@ public class RepositorioVentas {
 
         HashMap<Producto, Integer> listaCompras = venta.getListaCompras();
         listaCompras.put(producto, listaCompras.getOrDefault(producto, 0) + cantidad);
-        venta.calcularTotal(); // Actualiza el total tras modificar la compra
+        venta.calcularTotal(); 
         return true;
     }
 
@@ -82,7 +81,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Elimina un producto de una venta.
+     * Elimina un producto de una venta
      *
      * @param idVenta ID de la venta
      * @param producto Producto a eliminar
@@ -101,7 +100,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Elimina una venta del repositorio.
+     * Elimina una venta del repositorio
      *
      * @param idVenta ID de la venta a eliminar
      * @return true si fue eliminada correctamente
@@ -111,7 +110,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Devuelve una lista de las ventas realizadas entre dos fechas (inclusive).
+     * Devuelve una lista de las ventas realizadas entre dos fechas 
      *
      * @param desde Fecha de inicio
      * @param hasta Fecha de fin
@@ -124,7 +123,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Obtiene una venta específica según su ID.
+     * Obtiene una venta específica según su ID
      *
      * @param idVenta ID de la venta
      * @return Objeto Venta si existe, null en caso contrario
@@ -134,7 +133,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Devuelve una lista con todas las ventas registradas.
+     * Devuelve una lista con todas las ventas registradas
      *
      * @return Lista de ventas
      */
@@ -143,7 +142,7 @@ public class RepositorioVentas {
     }
 
     /**
-     * Genera un informe de productos vendidos y sus cantidades entre dos fechas.
+     * Genera un informe de productos vendidos y sus cantidades entre dos fechas
      *
      * @param desde Fecha de inicio
      * @param hasta Fecha de fin

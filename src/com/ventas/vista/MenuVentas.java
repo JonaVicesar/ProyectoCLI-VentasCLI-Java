@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Clase encargada de gestionar el menú de ventas. Permite crear, listar, ver
- * detalles, eliminar ventas y generar informes de productos vendidos.
+ * Clase encargada de gestionar el menú de ventas, permite crear listar, ver
+ * detalles, eliminar ventas y generar informes de productos vendido
  *
  * @author Jona Vicesar
  */
@@ -22,8 +22,8 @@ public class MenuVentas {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
-     * Muestra el menú principal de ventas y solicita al usuario que seleccione
-     * una opción.
+     * Muestra el menu principal de ventas y solicita al usuario que seleccione
+     * una opcion
      */
     public void mostrar() {
         System.out.println("MENU VENTAS ");
@@ -39,7 +39,7 @@ public class MenuVentas {
     }
 
     /**
-     * Recibe la opción del usuario y ejecuta la acción correspondiente.
+     * Recibe la opcion del usuario y ejecuta la accion correspondiente
      */
     public void seleccionarOpcion() {
         String opcion = entrada.nextLine();
@@ -77,13 +77,13 @@ public class MenuVentas {
     }
 
     /**
-     * Permite al usuario crear una nueva venta, ingresando cliente y productos.
-     * Se muestra un resumen y se solicita confirmación antes de guardar.
+     * Permite al usuario crear una nueva venta, ingresando cliente y productos
+     * se muestra un resumen y se solicita confirmación antes de guardar
      */
     private void crearNuevaVenta() {
         try {
             System.out.println("\nCREAR NUEVA VENTA");
-            controladorVentas.limpiarCarrito(); // Asegurar que el carrito esté limpio
+            controladorVentas.limpiarCarrito(); // Asegurar que el carrito estee limpio
 
             System.out.print("Ingrese el documento del cliente: ");
             int documento = Integer.parseInt(entrada.nextLine());
@@ -133,7 +133,7 @@ public class MenuVentas {
 
     /**
      * Muestra por consola los productos actualmente en el carrito junto con su
-     * precio total.
+     * precio total
      */
     private void mostrarCarrito() {
         System.out.println("\nCARRITO DE COMPRAS");
@@ -166,8 +166,8 @@ public class MenuVentas {
     }
 
     /**
-     * Lista todas las ventas registradas, mostrando sus datos básicos en
-     * formato de tabla.
+     * Lista todas las ventas registradas, mostrando sus datos basicos en
+     * formato de tabla
      */
 
     private void listarVentas() {
@@ -193,7 +193,7 @@ public class MenuVentas {
     }
 
     /**
-     * Solicita al usuario un ID de venta y muestra sus detalles si existe.
+     * Solicita al usuario un ID de venta y muestra sus detalles si es que existe
      */
     private void verDetalleVenta() {
         System.out.println("\nDETALLE DE VENTA");
@@ -214,8 +214,8 @@ public class MenuVentas {
     }
 
     /**
-     * Elimina una venta seleccionada por su ID, solicitando confirmación antes
-     * de hacerlo.
+     * Elimina una venta seleccionada por su ID, solicitando confirmacion antes
+     * de hacerlo
      */
     private void eliminarVenta() {
         System.out.println("\nELIMINAR VENTA");
@@ -250,7 +250,7 @@ public class MenuVentas {
 
     /**
      * Solicita un rango de fechas y muestra un informe con los productos
-     * vendidos y sus totales.
+     * vendidos y sus totales
      */
     private void hacerInformeProductosVendidos() {
         System.out.println("\nINFORME DE PRODUCTOS VENDIDOS");
@@ -304,12 +304,7 @@ public class MenuVentas {
     }
 
     /**
-     * Imprime en consola un ticket detallado de la venta proporcionada.
-     *
-     * @param venta Objeto Venta del cual se desea mostrar el ticket
-     */
-    /**
-     * Imprime en consola un ticket detallado de la venta proporcionada.
+     * Imprime en consola un ticket detallado de la venta proporcionada
      *
      * @param venta Objeto Venta del cual se desea mostrar el ticket
      */
@@ -319,7 +314,7 @@ public class MenuVentas {
         System.out.println("Cliente: " + venta.getCliente().getNombreCompleto());
         System.out.println("Documento: " + venta.getCliente().getDocumento());
 
-        // Mostrar método de pago con formato elegante
+        
         String metodoPago = venta.getCliente().getMetodoPago();
         if (metodoPago.equalsIgnoreCase("TARJETA")) {
             String tarjeta = venta.getCliente().getTarjeta();
