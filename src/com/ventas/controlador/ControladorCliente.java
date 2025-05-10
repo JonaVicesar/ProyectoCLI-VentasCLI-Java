@@ -2,14 +2,14 @@ package com.ventas.controlador;
 
 import com.ventas.modelo.Cliente;
 import com.ventas.repositorio.RepositorioCliente;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * Clase encargada de manejar la lógica de negocio y validación relacionada con clientes.
- * Aquí se centraliza el control de flujo antes de interactuar con el repositorio.
- * 
+ * Clase encargada de manejar la lógica de negocio y validación relacionada con
+ * clientes. Aquí se centraliza el control de flujo antes de interactuar con el
+ * repositorio.
+ *
  * @author Jona Vicesar
  */
 public class ControladorCliente {
@@ -63,6 +63,7 @@ public class ControladorCliente {
      * @return true si se agrega correctamente
      */
     public boolean agregarCliente(String nombre, int edad, int documento, String telefono, String metodo, String tarjeta) {
+        String validacionDeTarjeta = "^\\d{14}$";
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede estar vacío");
         }
@@ -71,6 +72,10 @@ public class ControladorCliente {
         }
         if (documento < DOCUMENTO_MINIMO) {
             throw new IllegalArgumentException("Número de documento incorrecto");
+        }
+
+        if (!tarjeta.matches(validacionDeTarjeta)) {
+            throw new IllegalArgumentException("No es una tarjeta valida");
         }
         if (repositorio.existeCliente(documento)) {
             throw new IllegalArgumentException("Ya existe un cliente con el mismo documento");

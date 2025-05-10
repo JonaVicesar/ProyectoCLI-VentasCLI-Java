@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Clase encargada de gestionar el menú de ventas.
- * Permite crear, listar, ver detalles, eliminar ventas y generar informes de productos vendidos.
- * Forma parte de la capa de presentación (Vista) del patrón MVC.
- * 
+ * Clase encargada de gestionar el menú de ventas. Permite crear, listar, ver
+ * detalles, eliminar ventas y generar informes de productos vendidos.
+ *
  * @author Jona Vicesar
  */
 public class MenuVentas {
@@ -23,7 +22,8 @@ public class MenuVentas {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
-     * Muestra el menú principal de ventas y solicita al usuario que seleccione una opción.
+     * Muestra el menú principal de ventas y solicita al usuario que seleccione
+     * una opción.
      */
     public void mostrar() {
         System.out.println("MENU VENTAS ");
@@ -34,7 +34,7 @@ public class MenuVentas {
         System.out.println("5 - Informe de Productos Vendidos");
         System.out.println("6 - Volver al Menu Principal");
         System.out.print("Seleccione una opcion: ");
-        
+
         seleccionarOpcion();
     }
 
@@ -132,7 +132,8 @@ public class MenuVentas {
     }
 
     /**
-     * Muestra por consola los productos actualmente en el carrito junto con su precio total.
+     * Muestra por consola los productos actualmente en el carrito junto con su
+     * precio total.
      */
     private void mostrarCarrito() {
         System.out.println("\nCARRITO DE COMPRAS");
@@ -165,8 +166,10 @@ public class MenuVentas {
     }
 
     /**
-     * Lista todas las ventas registradas, mostrando sus datos básicos en formato de tabla.
+     * Lista todas las ventas registradas, mostrando sus datos básicos en
+     * formato de tabla.
      */
+
     private void listarVentas() {
         System.out.println("\n==== LISTA DE VENTAS ====");
 
@@ -175,14 +178,16 @@ public class MenuVentas {
             return;
         }
 
-        System.out.printf("%-5s %-15s %-15s %-10s%n", "ID", "CLIENTE", "FECHA", "TOTAL");
-        System.out.println("---------------------------------------------------");
+        
+        System.out.printf("%-5s %-15s %-15s %-15s %-10s%n", "ID", "CLIENTE", "FECHA", "METODO", "TOTAL");
+        System.out.println("--------------------------------------------------------------------");
 
         for (Venta venta : controladorVentas.listarVentas()) {
-            System.out.printf("%-5d %-15s %-15s $%-9.2f%n",
+            System.out.printf("%-5d %-15s %-15s %-15s $%-9.2f%n",
                     venta.getIdVenta(),
                     venta.getCliente().getNombreCompleto(),
                     venta.getFecha().format(dateFormatter),
+                    venta.getCliente().getMetodoPago(),
                     venta.getTotal());
         }
     }
@@ -209,7 +214,8 @@ public class MenuVentas {
     }
 
     /**
-     * Elimina una venta seleccionada por su ID, solicitando confirmación antes de hacerlo.
+     * Elimina una venta seleccionada por su ID, solicitando confirmación antes
+     * de hacerlo.
      */
     private void eliminarVenta() {
         System.out.println("\nELIMINAR VENTA");
@@ -224,7 +230,7 @@ public class MenuVentas {
                 imprimirTicket(venta);
 
                 System.out.print("¿Esta seguro que desea eliminar esta venta? (S/N): ");
-                
+
                 if (entrada.nextLine().equalsIgnoreCase("S")) {
                     if (controladorVentas.eliminarVenta(idVenta)) {
                         System.out.println("Venta eliminada exitosamente.");
@@ -243,7 +249,8 @@ public class MenuVentas {
     }
 
     /**
-     * Solicita un rango de fechas y muestra un informe con los productos vendidos y sus totales.
+     * Solicita un rango de fechas y muestra un informe con los productos
+     * vendidos y sus totales.
      */
     private void hacerInformeProductosVendidos() {
         System.out.println("\nINFORME DE PRODUCTOS VENDIDOS");
@@ -292,10 +299,15 @@ public class MenuVentas {
             System.out.printf("TOTAL VENTAS: $%.2f%n", granTotal);
 
         } catch (DateTimeParseException e) {
-            System.out.println("Error: Formato de fecha inválido. Use DD/MM/AAAA.");
+            System.out.println("Error: Formato de fecha invalido. Use DD/MM/AAAA.");
         }
     }
 
+    /**
+     * Imprime en consola un ticket detallado de la venta proporcionada.
+     *
+     * @param venta Objeto Venta del cual se desea mostrar el ticket
+     */
     /**
      * Imprime en consola un ticket detallado de la venta proporcionada.
      *
@@ -306,6 +318,19 @@ public class MenuVentas {
         System.out.println("ID Venta: " + venta.getIdVenta());
         System.out.println("Cliente: " + venta.getCliente().getNombreCompleto());
         System.out.println("Documento: " + venta.getCliente().getDocumento());
+
+        // Mostrar método de pago con formato elegante
+        String metodoPago = venta.getCliente().getMetodoPago();
+        if (metodoPago.equalsIgnoreCase("TARJETA")) {
+            String tarjeta = venta.getCliente().getTarjeta();
+            String ultimos4 = tarjeta != null && tarjeta.length() >= 4
+                    ? "**** " + tarjeta.substring(tarjeta.length() - 4)
+                    : "****";
+            System.out.println("Metodo de Pago: Tarjeta (" + ultimos4 + ")");
+        } else {
+            System.out.println("Metodo de Pago: Efectivo");
+        }
+
         System.out.println("Fecha: " + venta.getFecha().format(dateFormatter));
         System.out.println("----------------------------------------");
         System.out.printf("%-20s %-10s %-10s %-10s%n", "PRODUCTO", "CANTIDAD", "PRECIO", "SUBTOTAL");
@@ -324,4 +349,5 @@ public class MenuVentas {
         System.out.printf("TOTAL: $%.2f%n", venta.getTotal());
         System.out.println("========================================");
     }
+
 }
